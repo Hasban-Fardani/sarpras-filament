@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('outgoing_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('operator_id');
+            $table->unsignedBigInteger('division_id');
+            $table->integer('total_items')->default(0);
+            $table->text('note')->nullable();
+
+            $table->foreign('operator_id')->references('id')->on('employees');
+            $table->foreign('division_id')->references('id')->on('employees');
             $table->timestamps();
         });
     }
@@ -23,5 +30,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('outgoing_items');
+        Schema::dropIfExists('item_outs');
     }
 };

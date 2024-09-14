@@ -18,7 +18,13 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
+            SupplierSeeder::class,
             ItemSeeder::class,
+            IncomingItemSeeder::class,
+            IncomingItemDetailSeeder::class,
+            OutgoingItemSeeder::class,
+            SubmissionItemSeeder::class,
+            RequestItemSeeder::class,
         ]);
     }
 }

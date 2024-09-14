@@ -2,16 +2,13 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Exports\ItemExporter;
 use App\Filament\Admin\Resources\ItemResource\Pages;
 use App\Filament\Admin\Resources\ItemResource\RelationManagers;
-use App\Models\Category;
 use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,56 +18,45 @@ class ItemResource extends Resource
     protected static ?string $model = Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Barang';
+    protected static ?string $navigationLabel = 'Barang Data Barang';
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Barang';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('')->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->required()
-                        ->columnSpan(2),
-                    Forms\Components\Select::make('category_id')
-                        ->label('Kategori')
-                        ->options(Category::all()->pluck('name', 'id'))
-                        ->required()
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('merk')
-                        ->label('Merk')
-                        ->required()
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('type')
-                        ->label('Tipe')
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('unit')
-                        ->label('Satuan')
-                        ->required()
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('price')
-                        ->label('Harga per satuan')
-                        ->required()
-                        ->numeric()
-                        ->prefix('Rp. ')
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('stock')
-                        ->label('Stok')
-                        ->required()
-                        ->numeric()
-                        ->columnSpan(3),
-                    Forms\Components\TextInput::make('min_stock')
-                        ->label('Min. Stok')
-                        ->required()
-                        ->numeric()
-                        ->columnSpan(3),
-                    Forms\Components\FileUpload::make('image')
-                        ->label('Gambar')
-                        ->image()
-                        ->required()
-                        ->disk('items_image')
-                        ->columnSpanFull(),
-                ])->columns(6)
+                Forms\Components\FileUpload::make('image')
+                    ->image(),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('unit')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('merk')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('type')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('size')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('stock')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('min_stock')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('price')
+                    ->required()
+                    ->numeric()
+                    ->default(0)
+                    ->prefix('$'),
+                Forms\Components\TextInput::make('category_id')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -78,57 +64,48 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\ImageColumn::make('image')
-                        ->label('Gambar')
-                        ->disk('items_image'),
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('name')
-                            ->label('Nama')
-                            ->searchable(),
-                    ]),
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('price')
-                            ->label('Harga/satuan')
-                            ->money(currency: 'IDR', locale: 'id')
-                            ->sortable()
-                            ->suffix(' /'),
-                        Tables\Columns\TextColumn::make('unit')
-                            ->label('Satuan')
-                            ->searchable(),
-                    ]),
-
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('stock')
-                            ->label('Stok')
-                            ->numeric()
-                            ->sortable()
-                            ->prefix('stok: '),
-                        Tables\Columns\TextColumn::make('min_stock')
-                            ->label('Min. Stok')
-                            ->numeric()
-                            ->sortable()
-                            ->prefix('min. stok: '),
-                    ]),
-                ]),
+                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('unit')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('merk')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('size')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('stock')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('min_stock')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('price')
+                    ->money()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->headerActions([
-                ExportAction::make('export')
-                    ->exporter(ItemExporter::class)
-                    ->label('Export')
-                    ->icon('heroicon-o-document'),
             ]);
     }
 

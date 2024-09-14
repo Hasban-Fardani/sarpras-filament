@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submission_details', function (Blueprint $table) {
+        Schema::create('submission_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('division_id');
+            $table->enum('status', ['diajukan', 'disetujui', 'ditolak'])->default('diajukan');
+            $table->integer('total_items');
+            $table->foreign('division_id')->references('id')->on('employees')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submission_details');
+        Schema::dropIfExists('submission_items');
     }
 };

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('request_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnDelete();
+            $table->enum('status', ['diajukan', 'disetujui', 'ditolak'])->default('diajukan');
+            $table->integer('total_items');
             $table->timestamps();
         });
     }
