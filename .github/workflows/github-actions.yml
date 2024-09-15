@@ -46,6 +46,6 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }} # FTP username
         password: ${{ secrets.FTP_PASSWORD }} # FTP password
         local-dir: ./                         # Direktori local project yang akan di-upload
-        server-dir: /www/wwwroot/sarpras.hasbanfardani.my.id  # Direktori di server tempat Anda mengupload
+        server-dir: /www/wwwroot/sarpras.hasbanfardani.my.id/  # Direktori di server tempat Anda mengupload
         protocol: ftp                         # Bisa ftp, ftps, sftp
 
