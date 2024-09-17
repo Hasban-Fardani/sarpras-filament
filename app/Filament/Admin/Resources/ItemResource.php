@@ -149,8 +149,8 @@ class ItemResource extends Resource
     {
         return [
             'index' => Pages\ListItems::route('/'),
-            'view' => Pages\ViewItems::route('/{record}'),
             'create' => Pages\CreateItem::route('/create'),
+            'view' => Pages\ViewItems::route('/{record}'),
             'edit' => Pages\EditItem::route('/{record}/edit'),
         ];
     }
