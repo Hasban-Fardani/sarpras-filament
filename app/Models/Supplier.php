@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function incomingItems()
+    {
+        return $this->hasMany(IncomingItem::class);
+    }
 }
