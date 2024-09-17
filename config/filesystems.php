@@ -54,8 +54,8 @@ return [
 
         'items_image' => [
             'driver' => 'local',
-            'root' => __DIR__ . '/../public/images/items',
-            'url' => env('APP_URL') . '/images/items',
+            'root' => storage_path('app/public/images/items'),
+            'url' => env('APP_URL') . '/storage/images/items',
             'visibility' => 'public',
             'throw' => false,
         ],
