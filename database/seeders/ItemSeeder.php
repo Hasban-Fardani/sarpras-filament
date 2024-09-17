@@ -23,7 +23,7 @@ class ItemSeeder extends Seeder
             'price' => 2000,
             'stock' => 10,
             'min_stock' => 15,
-            'category_id' => 2
+            'category_id' => 1
         ]);
 
         Item::create([
@@ -36,7 +36,7 @@ class ItemSeeder extends Seeder
             'price' => 1500,
             'stock' => 10,
             'min_stock' => 5,
-            'category_id' => 2
+            'category_id' => 1
         ]);
 
         Item::create([
@@ -49,7 +49,7 @@ class ItemSeeder extends Seeder
             'price' => 10000,
             'stock' => 10,
             'min_stock' => 5,
-            'category_id' => 3
+            'category_id' => 1
         ]);
 
         Item::create([

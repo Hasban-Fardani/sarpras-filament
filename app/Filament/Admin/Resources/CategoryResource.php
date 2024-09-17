@@ -29,7 +29,7 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-            ]);
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
