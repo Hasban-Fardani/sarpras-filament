@@ -34,11 +34,6 @@ class RequestItemResource extends Resource
                     ->options(Employee::all()->pluck('name', 'id'))
                     ->default($user->employee->id)
                     ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('total_items')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 
@@ -81,7 +76,7 @@ class RequestItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class,
         ];
     }
 
