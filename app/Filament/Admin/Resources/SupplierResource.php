@@ -26,17 +26,20 @@ class SupplierResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nama')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->label('Alamat')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Telepon')
-                    ->tel()
-                    ->maxLength(255),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nama')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('phone')
+                        ->label('Telepon')
+                        ->tel()
+                        ->maxLength(255),
+                    Forms\Components\Textarea::make('address')
+                        ->label('Alamat')
+                        ->maxLength(255)
+                        ->columnSpanFull(),
+                ])->columns(2),
             ]);
     }
 
