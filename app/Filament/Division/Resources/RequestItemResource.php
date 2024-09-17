@@ -84,7 +84,6 @@ class RequestItemResource extends Resource
     {
         return [
             'index' => Pages\ListRequestItems::route('/'),
-            'create' => Pages\CreateRequestItem::route('/create'),
             'edit' => Pages\EditRequestItem::route('/{record}/edit'),
         ];
     }
