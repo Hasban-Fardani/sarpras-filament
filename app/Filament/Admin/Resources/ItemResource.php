@@ -127,6 +127,7 @@ class ItemResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -148,6 +149,7 @@ class ItemResource extends Resource
     {
         return [
             'index' => Pages\ListItems::route('/'),
+            'view' => Pages\ViewItems::route('/{record}'),
             'create' => Pages\CreateItem::route('/create'),
             'edit' => Pages\EditItem::route('/{record}/edit'),
         ];
