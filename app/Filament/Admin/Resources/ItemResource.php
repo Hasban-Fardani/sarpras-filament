@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ItemResource\Pages;
 use App\Filament\Admin\Resources\ItemResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -27,36 +28,58 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('unit')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('merk')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('size')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('stock')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('min_stock')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->prefix('$'),
-                Forms\Components\TextInput::make('category_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\FileUpload::make('image')
+                        ->label('Gambar')
+                        ->image()
+                        ->columnSpanFull(),
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nama')
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('merk')
+                        ->label('Merk')
+                        ->maxLength(255)
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('unit')
+                        ->label('Satuan')
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpan(2),
+                    Forms\Components\TextInput::make('type')
+                        ->label('Tipe')
+                        ->maxLength(255)
+                        ->columnSpan(2),
+                    Forms\Components\TextInput::make('size')
+                        ->label('Ukuran')
+                        ->maxLength(255)
+                        ->columnSpan(2),
+                    Forms\Components\TextInput::make('stock')
+                        ->label('Stok')
+                        ->required()
+                        ->numeric()
+                        ->default(0)
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('min_stock')
+                        ->label('Stok Minimum')
+                        ->required()
+                        ->numeric()
+                        ->default(0)
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('price')
+                        ->label('Harga')
+                        ->required()
+                        ->numeric()
+                        ->default(0)
+                        ->prefix('Rp. ')
+                        ->columnSpan(3),
+                    Forms\Components\Select::make('category_id')
+                        ->label('Kategori')
+                        ->options(Category::all()->pluck('name', 'id'))
+                        ->required()
+                        ->columnSpan(3),
+                ])->columns(6),
             ]);
     }
 
