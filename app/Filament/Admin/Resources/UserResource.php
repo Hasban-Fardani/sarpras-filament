@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,20 +27,26 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('username'),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\TextInput::make('nip')
-                    ->required(),
-                Forms\Components\TextInput::make('role')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('username'),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required(),
+                    Forms\Components\Select::make('nip')
+                        ->label('Pegawai')
+                        ->options(Employee::all()->pluck('name', 'nip'))
+                        ->required(),
+                    Forms\Components\Select::make('role')
+                        ->options([
+                            'admin' => 'Admin',
+                            'supervisor' => 'Pengawas/Kepsek',
+                            'division' => 'Unit Kerja',
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('password')
+                        ->password()
+                        ->required(),
+                ])->columns(2),
             ]);
     }
 
@@ -56,7 +63,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable()
