@@ -18,17 +18,29 @@ class OutgoingItemResource extends Resource
     protected static ?string $model = OutgoingItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'Kelola Barang Keluar';
 
     protected static ?string $navigationGroup = 'Barang';
-    protected static ?int $navigationSort = 5;
 
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('operator_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('division_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('total_items')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\Textarea::make('note')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -36,7 +48,23 @@ class OutgoingItemResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('operator_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('division_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_items')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
