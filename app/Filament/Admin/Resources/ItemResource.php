@@ -32,6 +32,7 @@ class ItemResource extends Resource
                     Forms\Components\FileUpload::make('image')
                         ->label('Gambar')
                         ->image()
+                        ->disk('items_image')
                         ->columnSpanFull(),
                     Forms\Components\TextInput::make('name')
                         ->label('Nama')
