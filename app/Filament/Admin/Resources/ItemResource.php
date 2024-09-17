@@ -89,37 +89,39 @@ class ItemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar')
                     ->disk('items_image'),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('unit')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Kategori')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('merk')
+                    ->label('Merk')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label('Tipe')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('size')
+                    ->label('Ukuran')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('stock')
+                    ->label('Stok')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('min_stock')
+                    ->label('Stok Minimum')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('unit')
+                    ->label('Satuan')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->label('Harga')
+                    ->money('IDR', 0, 'id_ID')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
