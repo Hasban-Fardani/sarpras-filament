@@ -6,6 +6,9 @@ use App\Filament\Admin\Resources\OutgoingItemResource\Pages;
 use App\Filament\Admin\Resources\OutgoingItemResource\RelationManagers;
 use App\Models\OutgoingItem;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,18 +32,20 @@ class OutgoingItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('operator_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('division_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_items')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\Textarea::make('note')
-                    ->columnSpanFull(),
+                Section::make()->schema([
+                    TextInput::make('operator_id')
+                        ->required()
+                        ->numeric(),
+                    TextInput::make('division_id')
+                        ->required()
+                        ->numeric(),
+                    TextInput::make('total_items')
+                        ->required()
+                        ->numeric()
+                        ->default(0),
+                    Textarea::make('note')
+                        ->columnSpanFull(),
+                ])->columns(3),
             ]);
     }
 
@@ -48,19 +53,24 @@ class OutgoingItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('operator_id')
+                Tables\Columns\TextColumn::make('operator.name')
+                    ->label('Operator')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('division_id')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('division.name')
+                    ->label('Divisi')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('total_items')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -82,7 +92,7 @@ class OutgoingItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class,
         ];
     }
 

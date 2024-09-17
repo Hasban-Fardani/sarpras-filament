@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class OutgoingItem extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function details()
+    {
+        return $this->hasMany(OutgoingItemDetail::class);
+    }
+
+    public function operator()
+    {
+        return $this->belongsTo(Employee::class, 'operator_id');
+    }
+
+    public function division()
+    {
+        return $this->belongsTo(Employee::class, 'division_id');
+    }
 }

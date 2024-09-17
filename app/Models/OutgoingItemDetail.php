@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class OutgoingItemDetail extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function outgoingItem()
+    {
+        return $this->belongsTo(OutgoingItem::class);
+    }
 }
