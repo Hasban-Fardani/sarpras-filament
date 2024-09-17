@@ -4,9 +4,11 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\RequestItemResource\Pages;
 use App\Filament\Admin\Resources\RequestItemResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\RequestItem;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,6 +20,7 @@ class RequestItemResource extends Resource
     protected static ?string $model = RequestItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'Permintaan Barang';
 
     protected static ?string $navigationGroup = 'Pengajuan';
@@ -26,7 +29,13 @@ class RequestItemResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\Select::make('employee_id')
+                        ->options(Employee::all()->pluck('name', 'id'))
+                        ->required(),
+                    Forms\Components\TextInput::make('status')
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -34,10 +43,21 @@ class RequestItemResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Pengaju')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status'),
+                Tables\Columns\TextColumn::make('total_items')
+                    ->label('Total Item')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -47,6 +67,7 @@ class RequestItemResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -59,7 +80,7 @@ class RequestItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class,
         ];
     }
 
@@ -68,6 +89,7 @@ class RequestItemResource extends Resource
         return [
             'index' => Pages\ListRequestItems::route('/'),
             'create' => Pages\CreateRequestItem::route('/create'),
+            'view' => Pages\ViewRequestItem::route('/{record}'),
             'edit' => Pages\EditRequestItem::route('/{record}/edit'),
         ];
     }

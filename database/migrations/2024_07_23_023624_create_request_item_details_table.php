@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('request_item_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('request_item_id');
             $table->integer('qty');
             $table->integer('qty_acc');
             
             $table->foreign('id')->references('id')->on('request_items')->cascadeOnDelete();
             $table->foreign('item_id')->references('id')->on('items')->cascadeOnDelete();
+            $table->foreign('request_item_id')->references('id')->on('request_items')->cascadeOnDelete();
             $table->timestamps();
         });
     }
