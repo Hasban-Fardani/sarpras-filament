@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('division_id');
             $table->integer('total_items')->default(0);
             $table->text('note')->nullable();
+            $table->enum('status', ['taken', 'not yet taken'])->default('not yet taken');
 
             $table->foreign('operator_id')->references('id')->on('employees');
             $table->foreign('division_id')->references('id')->on('employees');
