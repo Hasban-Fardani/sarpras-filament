@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('submission_item_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('submission_id');
+            $table->unsignedBigInteger('submission_item_id');
             $table->unsignedBigInteger('item_id');
             $table->integer('qty');
-            $table->integer('qty_acc');
+            $table->integer('qty_acc')->default(0);
 
-            $table->foreign('submission_id')->references('id')->on('submission_items')->cascadeOnDelete();
+            $table->foreign('submission_item_id')->references('id')->on('submission_items')->cascadeOnDelete();
             $table->foreign('item_id')->references('id')->on('items')->cascadeOnDelete();
             $table->timestamps();
         });

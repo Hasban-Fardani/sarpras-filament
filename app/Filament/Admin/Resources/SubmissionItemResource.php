@@ -2,8 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\SubmissionResource\Pages;
-use App\Filament\Admin\Resources\SubmissionResource\RelationManagers;
+use App\Filament\Admin\Resources\SubmissionItemResource\Pages;
+use App\Filament\Admin\Resources\SubmissionItemResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\SubmissionItem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,11 +14,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SubmissionResource extends Resource
+class SubmissionItemResource extends Resource
 {
     protected static ?string $model = SubmissionItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
     protected static ?string $navigationLabel = 'Pengadaan Barang';
 
     protected static ?string $navigationGroup = 'Pengajuan';
@@ -26,7 +28,10 @@ class SubmissionResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('division_id')
+                    ->label('Pengaju')
+                    ->options(Employee::all()->pluck('name', 'id'))
+                    ->required(),
             ]);
     }
 
@@ -34,10 +39,22 @@ class SubmissionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('division.name')
+                    ->label('Pengaju')
+                    ->searchable()
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status'),
+                Tables\Columns\TextColumn::make('total_items')
+                    ->label('Jumlah Item')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Pengajuan')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -59,16 +76,15 @@ class SubmissionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSubmissions::route('/'),
-            'create' => Pages\CreateSubmission::route('/create'),
-            'edit' => Pages\EditSubmission::route('/{record}/edit'),
+            'index' => Pages\ListSubmissionItems::route('/'),
+            'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];
     }
 }
