@@ -10,6 +10,11 @@ class EditSupplier extends EditRecord
 {
     protected static string $resource = SupplierResource::class;
 
+    protected function getRedirectUrl(): ?string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

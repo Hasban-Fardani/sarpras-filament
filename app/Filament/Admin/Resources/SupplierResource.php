@@ -21,11 +21,25 @@ class SupplierResource extends Resource
     protected static ?string $navigationGroup = 'Barang';
     protected static ?string $navigationLabel = 'Kelola Data Supplier';
     protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nama')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('phone')
+                        ->label('Telepon')
+                        ->tel()
+                        ->maxLength(255),
+                    Forms\Components\Textarea::make('address')
+                        ->label('Alamat')
+                        ->maxLength(255)
+                        ->columnSpanFull(),
+                ])->columns(2),
             ]);
     }
 
@@ -33,14 +47,19 @@ class SupplierResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->label('Alamat')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Telepon')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('incoming_items_count')
+                    ->label('Jumlah Barang Masuk')
+                    ->counts('incomingItems')
+                    ->searchable(),
             ])
             ->filters([
                 //
