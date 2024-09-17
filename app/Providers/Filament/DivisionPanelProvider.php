@@ -29,8 +29,9 @@ class DivisionPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
+            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Division/Resources'), for: 'App\\Filament\\Division\\Resources')
             ->discoverPages(in: app_path('Filament/Division/Pages'), for: 'App\\Filament\\Division\\Pages')
             ->pages([
