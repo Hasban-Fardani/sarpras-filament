@@ -33,9 +33,9 @@ class RequestItemResource extends Resource
                     Forms\Components\Select::make('employee_id')
                         ->label('Nama Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->required(),
+                        ->disabled(),
                     Forms\Components\TextInput::make('status')
-                        ->required(),
+                        ->disabled(),
                 ]),
             ]);
     }
@@ -49,7 +49,17 @@ class RequestItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->badge()
+                    ->color(function ($state) {
+                        $colors = [
+                            'draf' => 'secondary',
+                            'diajukan' => 'warning',
+                            'disetujui' => 'success',
+                            'ditolak' => 'danger',
+                        ];
+                        return $colors[$state];
+                    }),
                 Tables\Columns\TextColumn::make('total_items')
                     ->label('Total Item')
                     ->numeric()

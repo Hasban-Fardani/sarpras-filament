@@ -47,7 +47,8 @@ class SubmissionItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('total_items')
                     ->label('Jumlah Item')
                     ->numeric()

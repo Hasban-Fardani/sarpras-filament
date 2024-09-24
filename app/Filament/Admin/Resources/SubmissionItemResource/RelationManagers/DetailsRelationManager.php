@@ -29,7 +29,12 @@ class DetailsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('item.name')
+                    ->label('Barang'),
+                Tables\Columns\TextColumn::make('qty')
+                    ->label('Jumlah'),
+                Tables\Columns\TextColumn::make('qty_acc')
+                    ->label('Jumlah ACC'),
             ])
             ->filters([
                 //

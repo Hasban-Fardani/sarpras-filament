@@ -8,6 +8,8 @@ use App\Models\Employee;
 use App\Models\RequestItem;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,13 +30,15 @@ class RequestItemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Informasi')->schema([
-                    Forms\Components\Select::make('division_id')
+                    Forms\Components\Select::make('employee_id')
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->default(Auth::id())
-                        ->disabled(),
+                        ->default(Auth::user()->employee->id)
+                        ->disabled(fn($livewire): bool => $livewire instanceof EditRecord),
                     Forms\Components\TextInput::make('status')
-                        ->disabled(),
+                        ->default('draf')
+                        ->disabled()
+                        ->hidden(fn($livewire): bool => $livewire instanceof CreateRecord),
                 ]),
             ]);
     }
