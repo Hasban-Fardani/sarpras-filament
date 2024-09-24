@@ -16,37 +16,31 @@ class SubmissionItemSeeder extends Seeder
         SubmissionItem::create([
             'division_id' => '3',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
 
         SubmissionItem::create([
             'division_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 10,
         ]);
 
         SubmissionItem::create([
             'division_id' => '3',
             'status' => 'diajukan',
-            'total_items' => 15,
         ]);
         
         SubmissionItem::create([
             'division_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 10,
         ]);
         
         SubmissionItem::create([
             'division_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 10,
         ]);
         
         SubmissionItem::create([
             'division_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 10,
         ]);
     }
 }
