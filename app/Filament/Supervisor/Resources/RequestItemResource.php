@@ -165,13 +165,9 @@ class RequestItemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
@@ -185,7 +181,7 @@ class RequestItemResource extends Resource
     {
         return [
             'index' => Pages\ListRequestItems::route('/'),
-            'edit' => Pages\EditRequestItem::route('/{record}/edit'),
+            'view' => Pages\ViewRequestItem::route('/{record}'),
         ];
     }
 

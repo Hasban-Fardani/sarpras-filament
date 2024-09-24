@@ -82,9 +82,7 @@ class OutgoingItemResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-            ]);
+            ->actions([]);
     }
 
     public static function getRelations(): array

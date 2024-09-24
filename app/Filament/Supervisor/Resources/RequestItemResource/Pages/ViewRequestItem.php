@@ -1,26 +1,28 @@
 <?php
 
-namespace App\Filament\Supervisor\Resources\SubmissionItemResource\Pages;
+namespace App\Filament\Supervisor\Resources\RequestItemResource\Pages;
 
-use App\Filament\Supervisor\Resources\SubmissionItemResource;
-use App\Models\SubmissionItem;
-use Filament\Infolists\Components\Actions\Action;
+use App\Filament\Supervisor\Resources\RequestItemResource;
+use App\Models\OutgoingItem;
+use App\Models\RequestItem;
+use Filament\Actions;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Textarea;
+use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\TextEntry\TextEntrySize;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Support\Facades\Auth;
 
-class ViewSubmissionItem extends ViewRecord
+class ViewRequestItem extends ViewRecord
 {
-    protected static string $resource = SubmissionItemResource::class;
+    protected static string $resource = RequestItemResource::class;
 
     public function infolist(Infolist $infolist): Infolist
     {
@@ -46,21 +48,24 @@ class ViewSubmissionItem extends ViewRecord
                         ->modalSubmitActionLabel('Kirim')
                         ->modalCancelActionLabel('Batal')
                         ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
-                        ->action(function (SubmissionItem $record) {
-                            // check if submission detail item qty is 0
-
-                            if ($record->total_items_acc == 0) {
-                                Notification::make()
-                                    ->title('Permintaan Gagal')
-                                    ->warning()
-                                    ->body('Permintaan tidak dapat diterima, karena total item acc =0')
-                                    ->send()
-                                    ->toDatabase();
-                                return;
-                            }
-
-
+                        ->action(function (RequestItem $record) {
                             $record->update(['status' => 'disetujui']);
+
+                            $division_employee = $record->employee;
+
+                            $items = [];
+
+                            $record->details->each(function ($detail) use (&$items, $division_employee) {
+                                array_push($items, [
+                                    'item_id' => $detail->item_id,
+                                    'qty' => $detail->qty_acc,
+                                    'division_id' => $division_employee->id,
+                                    'operator_id' => Auth::user()->employee->id,
+                                    'created_at' => now()
+                                ]);
+                            });
+
+                            OutgoingItem::insert($items);
 
                             Notification::make()
                                 ->title('Berhasil merubah status Permintaan')
@@ -68,7 +73,7 @@ class ViewSubmissionItem extends ViewRecord
                                 ->send()
                                 ->toDatabase();
 
-                            $division_user = $record->division->user;
+                            $division_user = $record->employee->user;
                             $division_user->notify(
                                 Notification::make('Permintaan Diterima')
                                     ->title('Permintaan: ' . $record->id . ' Diterima')
@@ -77,10 +82,10 @@ class ViewSubmissionItem extends ViewRecord
                                     ->toDatabase()
                             );
 
-                            return redirect()->route('filament.supervisor.resources.submission-items.index');
+                            return redirect()->route('filament.supervisor.resources.request-items.index');
                         })
                         ->visible(fn($livewire): bool => $livewire instanceof ViewRecord)
-                        ->hidden(fn(SubmissionItem $record): bool => $record->status !== 'diajukan'),
+                        ->hidden(fn(RequestItem $record): bool => $record->status !== 'diajukan'),
                     Action::make('tolak')
                         ->color('danger')
                         ->requiresConfirmation()
@@ -95,7 +100,7 @@ class ViewSubmissionItem extends ViewRecord
                                 ->required()
                                 ->placeholder('Masukkan alasan mengapa permintaan ditolak')
                         ])
-                        ->action(function (SubmissionItem $record, array $data) {
+                        ->action(function (RequestItem $record, array $data) {
                             Notification::make()
                                 ->title('Berhasil merubah status Permintaan')
                                 ->success()
@@ -103,7 +108,7 @@ class ViewSubmissionItem extends ViewRecord
                                 ->toDatabase();
 
                             $record->update(['status' => 'ditolak']);
-                            $division_user = $record->division->user;
+                            $division_user = $record->employee->user;
                             $division_user->notify(
                                 Notification::make('Permintaan Ditolak')
                                     ->title('Permintaan: ' . $record->id . ' Ditolak')
@@ -112,12 +117,13 @@ class ViewSubmissionItem extends ViewRecord
                                     ->toDatabase()
                             );
 
-                            return redirect()->route('filament.supervisor.resources.submission-items.index');
+                            return redirect()->route('filament.supervisor.resources.request-items.index');
                         })
                         ->visible(fn($livewire): bool => $livewire instanceof ViewRecord)
-                        ->hidden(fn(SubmissionItem $record): bool => $record->status !== 'diajukan'),
+                        ->hidden(fn(RequestItem $record): bool => $record->status !== 'diajukan'),
+                ])
+                ->footerActionsAlignment(Alignment::Center),
 
-                ])->footerActionsAlignment(Alignment::Center),
         ]);
     }
 }

@@ -40,21 +40,20 @@ class DetailsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
+            ->headerActions([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     protected function canCreate(): bool
     {
         return false;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->getOwnerRecord()->status !== 'diajukan';
     }
 }
