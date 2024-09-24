@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('qty');
             $table->integer('qty_acc')->default(0);
             
-            $table->foreign('id')->references('id')->on('request_items')->cascadeOnDelete();
             $table->foreign('item_id')->references('id')->on('items')->cascadeOnDelete();
             $table->foreign('request_item_id')->references('id')->on('request_items')->cascadeOnDelete();
             $table->timestamps();

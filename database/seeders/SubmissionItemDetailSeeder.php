@@ -19,7 +19,6 @@ class SubmissionItemDetailSeeder extends Seeder
         $faker = Faker::create();
 
         SubmissionItem::all()->each(function ($submissionItem) use ($faker) {
-            Log::info('seeding submission: ' . $submissionItem->id . ' details');
             for ($i = 0; $i < 3; $i++) {
                 SubmissionItemDetail::create([
                     'submission_item_id' => $submissionItem->id,

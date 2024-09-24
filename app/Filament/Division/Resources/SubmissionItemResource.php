@@ -6,9 +6,11 @@ use App\Filament\Division\Resources\SubmissionItemResource\Pages;
 use App\Filament\Division\Resources\SubmissionItemResource\RelationManagers;
 use App\Models\Employee;
 use App\Models\SubmissionItem;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,6 +34,9 @@ class SubmissionItemResource extends Resource
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->default(Auth::id()),
+                    Forms\Components\TextInput::make('status')
+                        ->label('Status')
+                        ->disabled()
                 ]),
             ]);
     }
@@ -76,7 +81,25 @@ class SubmissionItemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Ajukan')
+                    ->color(Color::Green)
+                    ->button()
+                    ->requiresConfirmation()
+                    ->modalHeading('Ajukan Pengadaan')
+                    ->modalDescription('Laporan akan diajukan')
+                    ->action(function (SubmissionItem $record) {
+                        $record->update([
+                            'status' => 'diajukan',
+                        ]);
+                    })
+                    ->modalSubmitActionLabel('Kirim')
+                    ->modalCancelActionLabel('Batal')
+                    ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Green))
+                    ->hidden(function (SubmissionItem $record) {
+                        return $record->status !== 'draf';
+                    }),
+                Tables\Actions\EditAction::make()
+                    ->color(Color::Yellow),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

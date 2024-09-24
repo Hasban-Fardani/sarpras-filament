@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id');
             $table->integer('qty');
             
-            $table->foreign('id')->references('id')->on('incoming_items')->cascadeOnDelete();
             $table->foreign('item_id')->references('id')->on('items')->cascadeOnDelete();
             $table->foreign('incoming_item_id')->references('id')->on('incoming_items')->cascadeOnDelete();
             $table->timestamps();

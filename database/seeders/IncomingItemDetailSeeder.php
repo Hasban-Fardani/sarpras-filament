@@ -17,7 +17,7 @@ class IncomingItemDetailSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($j = 1; $j < 3; $j++) {
+        for ($j = 1; $j < 5; $j++) {
 
             for ($i = 0; $i < 3; $i++) {
                 IncomingItemDetail::create([

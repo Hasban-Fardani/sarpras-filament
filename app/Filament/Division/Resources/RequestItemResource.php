@@ -25,8 +25,6 @@ class RequestItemResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = Auth::user();
-        $user->load('employee');
         return $form
             ->schema([
                 Forms\Components\Section::make('Informasi')->schema([
@@ -34,6 +32,8 @@ class RequestItemResource extends Resource
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->default(Auth::id())
+                        ->disabled(),
+                    Forms\Components\TextInput::make('status')
                         ->disabled(),
                 ]),
             ]);
