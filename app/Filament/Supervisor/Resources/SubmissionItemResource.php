@@ -4,6 +4,7 @@ namespace App\Filament\Supervisor\Resources;
 
 use App\Filament\Supervisor\Resources\SubmissionItemResource\Pages;
 use App\Filament\Supervisor\Resources\SubmissionItemResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\SubmissionItem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,14 +24,14 @@ class SubmissionItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('division_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('total_items')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Informasi')->schema([ 
+                    Forms\Components\Select::make('division_id')
+                        ->label('Pengaju')
+                        ->options(Employee::all()->pluck('name', 'id'))
+                        ->required(),
+                    Forms\Components\TextInput::make('status')
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -38,10 +39,23 @@ class SubmissionItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('division_id')
+                Tables\Columns\TextColumn::make('division.name')
+                    ->label('Pengaju')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(function ($state) {
+                        $colors = [
+                            'draf' => 'secondary',
+                            'diajukan' => 'warning',
+                            'disetujui' => 'success',
+                            'ditolak' => 'danger',
+                        ];
+                        return $colors[$state];
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('total_items')
                     ->numeric()
                     ->sortable(),

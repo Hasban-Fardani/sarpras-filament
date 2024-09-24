@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+// use RequestItemDetailSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             IncomingItemDetailSeeder::class,
             OutgoingItemSeeder::class,
             SubmissionItemSeeder::class,
+            SubmissionItemDetailSeeder::class,
             RequestItemSeeder::class,
+            RequestItemDetailSeeder::class
         ]);
     }
 }

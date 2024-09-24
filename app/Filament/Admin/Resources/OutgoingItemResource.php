@@ -59,10 +59,14 @@ class OutgoingItemResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('division.name')
-                    ->label('Divisi')
+                    ->label('Nama Kepala Divisi')
                     ->numeric()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('item.name')
+                    ->label('Barang')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('qty')
                     ->label('Jumlah')
                     ->numeric()
@@ -101,7 +105,6 @@ class OutgoingItemResource extends Resource
         return [
             'index' => Pages\ListOutgoingItems::route('/'),
             'create' => Pages\CreateOutgoingItem::route('/create'),
-            'edit' => Pages\EditOutgoingItem::route('/{record}/edit'),
         ];
     }
 }

@@ -55,6 +55,10 @@ class OutgoingItemResource extends Resource
                     ->label('Petugas Gudang')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('item.name')
+                    ->label('Barang')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('qty')
                     ->label('Jumlah')
                     ->numeric()

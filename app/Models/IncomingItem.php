@@ -25,4 +25,8 @@ class IncomingItem extends Model
     {
         return $this->hasMany(IncomingItemDetail::class);
     }
+    public function getTotalItemsAttribute()
+    {
+        return $this->details->sum('qty');
+    }
 }

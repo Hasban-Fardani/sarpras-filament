@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\SubmissionItem;
+use App\Models\SubmissionItemDetail;
+use App\Models\Item;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Log;
 
 class SubmissionItemDetailSeeder extends Seeder
 {
@@ -12,6 +16,17 @@ class SubmissionItemDetailSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $faker = Faker::create();
+
+        SubmissionItem::all()->each(function ($submissionItem) use ($faker) {
+            Log::info('seeding submission: ' . $submissionItem->id . ' details');
+            for ($i = 0; $i < 3; $i++) {
+                SubmissionItemDetail::create([
+                    'submission_item_id' => $submissionItem->id,
+                    'item_id' => $faker->randomElement(Item::all()->pluck('id')->toArray()),
+                    'qty' => $faker->numberBetween(1, 100),
+                ]);
+            }
+        });
     }
 }

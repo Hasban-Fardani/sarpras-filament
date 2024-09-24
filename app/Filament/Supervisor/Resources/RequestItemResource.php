@@ -4,14 +4,18 @@ namespace App\Filament\Supervisor\Resources;
 
 use App\Filament\Supervisor\Resources\RequestItemResource\Pages;
 use App\Filament\Supervisor\Resources\RequestItemResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\RequestItem;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class RequestItemResource extends Resource
 {
@@ -23,25 +27,44 @@ class RequestItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('employee_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('total_items')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Informasi')->schema([
+                    Forms\Components\Select::make('employee_id')
+                        ->label('Pengaju')
+                        ->required()
+                        ->options(Employee::all()->pluck('name', 'id'))
+                        ->default(Auth::id())
+                        ->disabled(),
+                    Forms\Components\TextInput::make('status')
+                        ->disabled(),
+                ])
+                ->footerActions([
+                    Action::make('setujui')
+                        ->color(Color::Blue),
+                    Action::make('tolak')
+                        ->color('danger'),
+                ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(RequestItem::where('status', '<>', 'draf'))
             ->columns([
-                Tables\Columns\TextColumn::make('employee_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Pengaju')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(function ($state) {
+                        $colors = [
+                            'draf' => 'secondary',
+                            'diajukan' => 'warning',
+                            'disetujui' => 'success',
+                            'ditolak' => 'danger',
+                        ];
+                        return $colors[$state];
+                    }),
                 Tables\Columns\TextColumn::make('total_items')
                     ->numeric()
                     ->sortable(),
@@ -70,7 +93,7 @@ class RequestItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class
         ];
     }
 

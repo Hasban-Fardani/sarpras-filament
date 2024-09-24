@@ -2,16 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\RequestItem;
+use App\Models\RequestItemDetail;
+use App\Models\Item;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class RequestItemDetailSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $faker = Faker::create();
+
+        for ($j = 1; $j < 3; $j++) {
+            for ($i = 0; $i < 3; $i++) {
+                RequestItemDetail::create([
+                    'request_item_id' => $j,
+                    'item_id' => $faker->randomElement(Item::all()->pluck('id')->toArray()),
+                    'qty' => $faker->numberBetween(1, 100),
+                ]);
+            }
+        };
     }
 }
