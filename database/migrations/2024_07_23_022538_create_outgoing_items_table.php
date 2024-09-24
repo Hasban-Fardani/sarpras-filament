@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('operator_id');
             $table->unsignedBigInteger('division_id');
+            $table->unsignedBigInteger('item_id');
+            $table->integer('qty')->default(0);
             $table->text('note')->nullable();
             $table->boolean('is_taken')->default(false);
 
             $table->foreign('operator_id')->references('id')->on('employees');
             $table->foreign('division_id')->references('id')->on('employees');
+            $table->foreign('item_id')->references('id')->on('items')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -20,4 +20,9 @@ class RequestItem extends Model
     {
         return $this->hasMany(RequestItemDetail::class);
     }
+
+    public function getTotalItemsAttribute()
+    {
+        return $this->details->sum('qty');
+    }
 }

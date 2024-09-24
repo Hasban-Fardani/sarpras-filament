@@ -33,7 +33,7 @@ class OutgoingItemResource extends Resource
                 Forms\Components\TextInput::make('division_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('total_items')
+                Forms\Components\TextInput::make('qty')
                     ->required()
                     ->numeric()
                     ->default(0),
@@ -55,9 +55,12 @@ class OutgoingItemResource extends Resource
                     ->label('Petugas Gudang')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('total_items')
+                Tables\Columns\TextColumn::make('qty')
+                    ->label('Jumlah')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('note')
+                    ->label('Catatan'),
                 Tables\Columns\TextColumn::make('is_taken')
                     ->label('Status')
                     ->formatStateUsing(fn($state) => $state ? 'Sudah Diambil' : 'Belum Diambil')

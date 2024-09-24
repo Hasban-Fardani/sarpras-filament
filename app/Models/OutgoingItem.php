@@ -11,11 +11,6 @@ class OutgoingItem extends Model
 
     protected $guarded = ['id'];
 
-    public function details()
-    {
-        return $this->hasMany(OutgoingItemDetail::class);
-    }
-
     public function operator()
     {
         return $this->belongsTo(Employee::class, 'operator_id');
@@ -24,10 +19,5 @@ class OutgoingItem extends Model
     public function division()
     {
         return $this->belongsTo(Employee::class, 'division_id');
-    }
-
-    public function getTotalItemsAttribute()
-    {
-        return $this->details->sum('qty');
     }
 }

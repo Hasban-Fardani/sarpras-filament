@@ -20,4 +20,9 @@ class SubmissionItem extends Model
     {
         return $this->belongsTo(Employee::class, 'division_id');
     }
+
+    public function getTotalItemsAttribute()
+    {
+        return $this->details->sum('qty');
+    }
 }

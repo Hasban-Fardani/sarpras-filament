@@ -39,7 +39,7 @@ class OutgoingItemResource extends Resource
                     TextInput::make('division_id')
                         ->required()
                         ->numeric(),
-                    TextInput::make('total_items')
+                    TextInput::make('qty')
                         ->required()
                         ->numeric()
                         ->default(0),
@@ -63,7 +63,8 @@ class OutgoingItemResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('total_items')
+                Tables\Columns\TextColumn::make('qty')
+                    ->label('Jumlah')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -92,7 +93,6 @@ class OutgoingItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\DetailsRelationManager::class,
         ];
     }
 
