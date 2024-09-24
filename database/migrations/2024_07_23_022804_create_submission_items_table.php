@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('division_id');
             $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');
-            $table->integer('total_items');
             $table->foreign('division_id')->references('id')->on('employees')->cascadeOnDelete();
             $table->timestamps();
         });

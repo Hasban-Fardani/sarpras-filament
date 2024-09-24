@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('perihal')->nullable();
             $table->string('sifat')->nullable();
             $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');
-            $table->integer('total_items');
             $table->timestamps();
         });
     }

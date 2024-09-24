@@ -16,31 +16,26 @@ class RequestItemSeeder extends Seeder
         RequestItem::create([
             'employee_id' => '3',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
 
         RequestItem::create([
             'employee_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
 
         RequestItem::create([
             'employee_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
 
         RequestItem::create([
             'employee_id' => '3',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
 
         RequestItem::create([
             'employee_id' => '4',
             'status' => 'diajukan',
-            'total_items' => 5,
         ]);
     }
 }

@@ -16,35 +16,30 @@ class OutgoingItemSeeder extends Seeder
         OutgoingItem::create([
             'operator_id' => '2',
             'division_id' => '3',
-            'total_items' => 5,
             'note' => 'Barang keluar untuk keperluan testing'
         ]);
 
         OutgoingItem::create([
             'operator_id' => '2',
             'division_id' => '3',
-            'total_items' => 5,
             'note' => 'Barang keluar untuk'
         ]);
 
         OutgoingItem::create([
             'operator_id' => '2',
             'division_id' => '4',
-            'total_items' => 5,
             'note' => 'Barang keluar untuk'
         ]);
 
         OutgoingItem::create([
             'operator_id' => '2',
             'division_id' => '4',
-            'total_items' => 6,
             'note' => 'Barang keluar untuk'
         ]);
 
         OutgoingItem::create([
             'operator_id' => '2',
             'division_id' => '4',
-            'total_items' => 6,
             'note' => 'Barang keluar untuk'
         ]);
     }
