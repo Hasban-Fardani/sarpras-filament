@@ -6,9 +6,12 @@ use App\Filament\Supervisor\Resources\SubmissionItemResource\Pages;
 use App\Filament\Supervisor\Resources\SubmissionItemResource\RelationManagers;
 use App\Models\Employee;
 use App\Models\SubmissionItem;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
@@ -40,10 +43,68 @@ class SubmissionItemResource extends Resource
                 ])->footerActions([
                     Action::make('setujui')
                         ->color(Color::Blue)
-                        ->visible(fn ($livewire): bool => $livewire instanceof EditRecord),
+                        ->requiresConfirmation()
+                        ->modalHeading('Setujui Permintaan')
+                        ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
+                        ->modalSubmitActionLabel('Kirim')
+                        ->modalCancelActionLabel('Batal')
+                        ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
+                        ->action(function (SubmissionItem $record) {
+                            $record->update(['status' => 'disetujui']);
+
+                            Notification::make()
+                                ->title('Berhasil merubah status Permintaan')
+                                ->success()
+                                ->send()
+                                ->toDatabase();
+
+                            $division_user = $record->division->user;
+                            $division_user->notify(
+                                Notification::make('Permintaan Diterima')
+                                    ->title('Permintaan: ' . $record->id . ' Diterima')
+                                    ->body("Silahkan ambil barang ke gudang")
+                                    ->success()
+                                    ->toDatabase()
+                            );
+
+                            return redirect()->route('filament.supervisor.resources.submission-items.index');
+                        })
+                        ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
                     Action::make('tolak')
                         ->color('danger')
-                        ->visible(fn ($livewire): bool => $livewire instanceof EditRecord),
+                        ->requiresConfirmation()
+                        ->modalHeading('Setujui Permintaan')
+                        ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
+                        ->modalSubmitActionLabel('Kirim')
+                        ->modalCancelActionLabel('Batal')
+                        ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
+                        ->form([
+                            Textarea::make('alasan_ditolak')
+                                ->label('Alasan Ditolak')
+                                ->required()
+                                ->placeholder('Masukkan alasan mengapa permintaan ditolak')
+                        ])
+                        ->action(function (SubmissionItem $record, array $data) {
+                            Notification::make()
+                                ->title('Berhasil merubah status Permintaan')
+                                ->success()
+                                ->send()
+                                ->toDatabase();
+
+                            $record->update(['status' => 'ditolak']);
+                            $division_user = $record->division->user;
+                            $division_user->notify(
+                                Notification::make('Permintaan Ditolak')
+                                    ->title('Permintaan: ' . $record->id . ' Diterima')
+                                    ->body("Alasan ditolak: " . $data['alasan_ditolak'])
+                                    ->danger()
+                                    ->toDatabase()
+                            );
+
+                            return redirect()->route('filament.supervisor.resources.submission-items.index');
+                        })
+                        ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
+
                 ])->footerActionsAlignment(Alignment::Center),
             ]);
     }

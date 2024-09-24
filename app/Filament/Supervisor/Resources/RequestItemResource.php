@@ -10,6 +10,7 @@ use App\Models\RequestItem;
 use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
@@ -48,8 +49,8 @@ class RequestItemResource extends Resource
                         Action::make('setujui')
                             ->color(Color::Blue)
                             ->requiresConfirmation()
-                            ->modalHeading('Tolak Laporan')
-                            ->modalDescription('Laporan akan ditolak karena tidak sesuai')
+                            ->modalHeading('Setujui Permintaan')
+                            ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
                             ->modalSubmitActionLabel('Kirim')
                             ->modalCancelActionLabel('Batal')
                             ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
@@ -61,11 +62,12 @@ class RequestItemResource extends Resource
                                 $items = [];
 
                                 $record->details->each(function ($detail) use (&$items, $division_employee) {
-                                    $items = array_merge($items, [
+                                    array_push($items, [
                                         'item_id' => $detail->item_id,
                                         'qty' => $detail->qty_acc,
                                         'division_id' => $division_employee->id,
-                                        'operator_id' => Auth::user()->employee->id
+                                        'operator_id' => Auth::user()->employee->id,
+                                        'created_at' => now()
                                     ]);
                                 });
 
@@ -74,22 +76,55 @@ class RequestItemResource extends Resource
                                 Notification::make()
                                     ->title('Berhasil merubah status Permintaan')
                                     ->success()
-                                    ->send();
+                                    ->send()
+                                    ->toDatabase();
 
                                 $division_user = $record->employee->user;
                                 $division_user->notify(
-                                    Notification::make('Revisi laporan')
+                                    Notification::make('Permintaan Diterima')
                                         ->title('Permintaan: ' . $record->id . ' Diterima')
                                         ->body("Silahkan ambil barang ke gudang")
                                         ->success()
                                         ->toDatabase()
                                 );
+
+                                return redirect()->route('filament.supervisor.resources.request-items.index');
                             })
                             ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
                         Action::make('tolak')
                             ->color('danger')
-                            ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
+                            ->requiresConfirmation()
+                            ->modalHeading('Setujui Permintaan')
+                            ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
+                            ->modalSubmitActionLabel('Kirim')
+                            ->modalCancelActionLabel('Batal')
+                            ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
+                            ->form([
+                                Textarea::make('alasan_ditolak')
+                                    ->label('Alasan Ditolak')
+                                    ->required()
+                                    ->placeholder('Masukkan alasan mengapa permintaan ditolak')
+                            ])
+                            ->action(function (RequestItem $record, array $data) {
+                                Notification::make()
+                                    ->title('Berhasil merubah status Permintaan')
+                                    ->success()
+                                    ->send()
+                                    ->toDatabase();
 
+                                $record->update(['status' => 'ditolak']);
+                                $division_user = $record->employee->user;
+                                $division_user->notify(
+                                    Notification::make('Permintaan Ditolak')
+                                        ->title('Permintaan: ' . $record->id . ' Diterima')
+                                        ->body("Alasan ditolak: " . $data['alasan_ditolak'])
+                                        ->danger()
+                                        ->toDatabase()
+                                );
+
+                                return redirect()->route('filament.supervisor.resources.request-items.index');
+                            })
+                            ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
                     ])
                     ->footerActionsAlignment(Alignment::Center),
             ]);
