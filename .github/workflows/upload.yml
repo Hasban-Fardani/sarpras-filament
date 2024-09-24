@@ -1,0 +1,38 @@
+name: Upload Laravel 11 to aaPanel
+
+on:
+  push:
+    branches:
+      - main  # Trigger ketika ada push ke branch 'main'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    # Step 2: Upload to ftp
+    - name: Upload to aaPanel via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}     # FTP Server (misalnya: ftp.yourdomain.com)
+        username: ${{ secrets.FTP_USERNAME }} # FTP username
+        password: ${{ secrets.FTP_PASSWORD }} # FTP password
+        local-dir: ./                         # Direktori local project yang akan di-upload
+        server-dir: / # Direktori di server tempat Anda mengupload
+        protocol: ftp                         # Bisa ftp, ftps, sftp
+        exclude: |
+          **/storage/**
+          **/config/**
+          **/test/**
+          **/bootstrap/**
+          **/vendor/**
+          **/.git*
+          **/.git*/**
+          **/node_modules/**

@@ -30,7 +30,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->colors([
-                'primary' => Color::Stone,
+                'primary' => Color::Emerald,
             ])
             ->discoverResources(in: app_path('Filament/Supervisor/Resources'), for: 'App\\Filament\\Supervisor\\Resources')
             ->discoverPages(in: app_path('Filament/Supervisor/Pages'), for: 'App\\Filament\\Supervisor\\Pages')
