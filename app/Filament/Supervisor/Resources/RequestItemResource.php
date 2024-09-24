@@ -11,6 +11,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +23,8 @@ class RequestItemResource extends Resource
     protected static ?string $model = RequestItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationLabel = 'Permintaan Barang';
 
     public static function form(Form $form): Form
     {
@@ -42,7 +45,8 @@ class RequestItemResource extends Resource
                         ->color(Color::Blue),
                     Action::make('tolak')
                         ->color('danger'),
-                ]),
+                ])
+                ->footerActionsAlignment(Alignment::Center),
             ]);
     }
 
@@ -101,7 +105,6 @@ class RequestItemResource extends Resource
     {
         return [
             'index' => Pages\ListRequestItems::route('/'),
-            'create' => Pages\CreateRequestItem::route('/create'),
             'edit' => Pages\EditRequestItem::route('/{record}/edit'),
         ];
     }

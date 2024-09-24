@@ -29,11 +29,13 @@ class RequestItemResource extends Resource
         $user->load('employee');
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->label('Pengaju')
-                    ->options(Employee::all()->pluck('name', 'id'))
-                    ->default($user->employee->id)
-                    ->required(),
+                Forms\Components\Section::make('Informasi')->schema([
+                    Forms\Components\Select::make('division_id')
+                        ->label('Pengaju')
+                        ->options(Employee::all()->pluck('name', 'id'))
+                        ->default(Auth::id())
+                        ->disabled(),
+                ]),
             ]);
     }
 
@@ -44,8 +46,20 @@ class RequestItemResource extends Resource
         return $table
             ->query(RequestItem::where('employee_id', $user->employee->id))
             ->columns([
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Pengaju'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->badge()
+                    ->color(function ($state) {
+                        $colors = [
+                            'draf' => 'secondary',
+                            'diajukan' => 'warning',
+                            'disetujui' => 'success',
+                            'ditolak' => 'danger',
+                        ];
+                        return $colors[$state];
+                    }),
                 Tables\Columns\TextColumn::make('total_items')
                     ->label('Jumlah Barang')
                     ->numeric()

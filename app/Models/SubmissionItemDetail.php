@@ -10,4 +10,14 @@ class SubmissionItemDetail extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function submissionItem()
+    {
+        return $this->belongsTo(SubmissionItem::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

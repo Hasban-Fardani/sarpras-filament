@@ -7,8 +7,11 @@ use App\Filament\Supervisor\Resources\SubmissionItemResource\RelationManagers;
 use App\Models\Employee;
 use App\Models\SubmissionItem;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,24 +23,32 @@ class SubmissionItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Pengadaan Barang';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informasi')->schema([ 
+                Forms\Components\Section::make('Informasi')->schema([
                     Forms\Components\Select::make('division_id')
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->required(),
                     Forms\Components\TextInput::make('status')
                         ->required(),
-                ]),
+                ])->footerActions([
+                    Action::make('setujui')
+                        ->color(Color::Blue),
+                    Action::make('tolak')
+                        ->color('danger'),
+                ])->footerActionsAlignment(Alignment::Center),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(SubmissionItem::where('status', '<>', 'draf'))
             ->columns([
                 Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju')
@@ -84,7 +95,7 @@ class SubmissionItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class
         ];
     }
 
@@ -92,7 +103,6 @@ class SubmissionItemResource extends Resource
     {
         return [
             'index' => Pages\ListSubmissionItems::route('/'),
-            'create' => Pages\CreateSubmissionItem::route('/create'),
             'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];
     }

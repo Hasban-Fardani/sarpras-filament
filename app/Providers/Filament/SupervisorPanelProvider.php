@@ -30,6 +30,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->topNavigation()
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Emerald,
             ])
