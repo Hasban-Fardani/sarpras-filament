@@ -31,8 +31,7 @@ class SubmissionItemResource extends Resource
                     Forms\Components\Select::make('division_id')
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->default(Auth::id())
-                        ->disabled(),
+                        ->default(Auth::id()),
                 ]),
             ]);
     }
