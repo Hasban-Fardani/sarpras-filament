@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources\SubmissionItemResource\RelationManagers;
 
-use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -19,14 +18,9 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('item_id')
-                    ->label('Barang')
-                    ->options(Item::all()->pluck('name', 'id'))
-                    ->required(),
-                Forms\Components\TextInput::make('qty')
-                    ->label('Jumlah')
-                    ->numeric()
-                    ->required(),
+                Forms\Components\TextInput::make('id')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 

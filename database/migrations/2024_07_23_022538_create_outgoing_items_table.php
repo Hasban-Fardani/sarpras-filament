@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('operator_id');
             $table->unsignedBigInteger('division_id');
-            $table->integer('total_items')->default(0);
             $table->text('note')->nullable();
             $table->boolean('is_taken')->default(false);
 

@@ -39,8 +39,6 @@ class DivisionPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Division/Widgets'), for: 'App\\Filament\\Division\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

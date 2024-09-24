@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('submission_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('division_id');
-            $table->enum('status', ['diajukan', 'disetujui', 'ditolak'])->default('diajukan');
+            $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');
             $table->integer('total_items');
             $table->foreign('division_id')->references('id')->on('employees')->cascadeOnDelete();
             $table->timestamps();

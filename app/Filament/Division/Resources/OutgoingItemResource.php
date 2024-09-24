@@ -61,6 +61,7 @@ class OutgoingItemResource extends Resource
                 Tables\Columns\TextColumn::make('is_taken')
                     ->label('Status')
                     ->formatStateUsing(fn($state) => $state ? 'Sudah Diambil' : 'Belum Diambil')
+                    ->color(fn($state) => $state ? 'success' : 'warning')
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
@@ -77,8 +78,6 @@ class OutgoingItemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('Lihat'),
                 Tables\Actions\Action::make('diambil')
                     ->label('Sudah Diambil')
                     ->button()
@@ -108,6 +107,12 @@ class OutgoingItemResource extends Resource
     {
         return [
             'index' => Pages\ListOutgoingItems::route('/'),
+            'view' => Pages\ViewOutgoingItem::route('/{record}'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

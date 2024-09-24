@@ -31,6 +31,7 @@ class RequestItemResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\Select::make('employee_id')
+                        ->label('Nama Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->required(),
                     Forms\Components\TextInput::make('status')

@@ -4,6 +4,7 @@ namespace App\Filament\Division\Resources;
 
 use App\Filament\Division\Resources\SubmissionItemResource\Pages;
 use App\Filament\Division\Resources\SubmissionItemResource\RelationManagers;
+use App\Models\Employee;
 use App\Models\SubmissionItem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,14 +27,11 @@ class SubmissionItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('division_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('division_id')
+                    ->label('Pengaju')
+                    ->options(Employee::all()->pluck('name', 'id'))
+                    ->default(Auth::id())
                     ->required(),
-                Forms\Components\TextInput::make('total_items')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 

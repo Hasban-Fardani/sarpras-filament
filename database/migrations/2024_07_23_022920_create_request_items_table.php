@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnDelete();
-            $table->enum('status', ['diajukan', 'disetujui', 'ditolak'])->default('diajukan');
+            $table->text('perihal')->nullable();
+            $table->string('sifat')->nullable();
+            $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');
             $table->integer('total_items');
             $table->timestamps();
         });

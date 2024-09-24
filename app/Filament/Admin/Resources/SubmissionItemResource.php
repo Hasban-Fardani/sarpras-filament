@@ -28,10 +28,12 @@ class SubmissionItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('division_id')
-                    ->label('Pengaju')
-                    ->options(Employee::all()->pluck('name', 'id'))
-                    ->required(),
+                Forms\Components\Section::make('')->schema([
+                    Forms\Components\Select::make('division_id')
+                        ->label('Pengaju')
+                        ->options(Employee::all()->pluck('name', 'id'))
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -64,6 +66,7 @@ class SubmissionItemResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -84,6 +87,7 @@ class SubmissionItemResource extends Resource
     {
         return [
             'index' => Pages\ListSubmissionItems::route('/'),
+            'view' => Pages\ViewSubmissionItem::route('/{record}'),
             'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];
     }
