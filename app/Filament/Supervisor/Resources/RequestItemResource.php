@@ -116,7 +116,7 @@ class RequestItemResource extends Resource
                                 $division_user = $record->employee->user;
                                 $division_user->notify(
                                     Notification::make('Permintaan Ditolak')
-                                        ->title('Permintaan: ' . $record->id . ' Diterima')
+                                        ->title('Permintaan: ' . $record->id . ' Ditolak')
                                         ->body("Alasan ditolak: " . $data['alasan_ditolak'])
                                         ->danger()
                                         ->toDatabase()
