@@ -39,73 +39,9 @@ class SubmissionItemResource extends Resource
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->required(),
                     Forms\Components\TextInput::make('status')
-                        ->required(),
-                ])->footerActions([
-                    Action::make('setujui')
-                        ->color(Color::Blue)
-                        ->requiresConfirmation()
-                        ->modalHeading('Setujui Permintaan')
-                        ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
-                        ->modalSubmitActionLabel('Kirim')
-                        ->modalCancelActionLabel('Batal')
-                        ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
-                        ->action(function (SubmissionItem $record) {
-                            $record->update(['status' => 'disetujui']);
-
-                            Notification::make()
-                                ->title('Berhasil merubah status Permintaan')
-                                ->success()
-                                ->send()
-                                ->toDatabase();
-
-                            $division_user = $record->division->user;
-                            $division_user->notify(
-                                Notification::make('Permintaan Diterima')
-                                    ->title('Permintaan: ' . $record->id . ' Diterima')
-                                    ->body("Silahkan ambil barang ke gudang")
-                                    ->success()
-                                    ->toDatabase()
-                            );
-
-                            return redirect()->route('filament.supervisor.resources.submission-items.index');
-                        })
-                        ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
-                    Action::make('tolak')
-                        ->color('danger')
-                        ->requiresConfirmation()
-                        ->modalHeading('Setujui Permintaan')
-                        ->modalDescription('Permintaan Akan disetujui, apakah anda yakin?')
-                        ->modalSubmitActionLabel('Kirim')
-                        ->modalCancelActionLabel('Batal')
-                        ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
-                        ->form([
-                            Textarea::make('alasan_ditolak')
-                                ->label('Alasan Ditolak')
-                                ->required()
-                                ->placeholder('Masukkan alasan mengapa permintaan ditolak')
-                        ])
-                        ->action(function (SubmissionItem $record, array $data) {
-                            Notification::make()
-                                ->title('Berhasil merubah status Permintaan')
-                                ->success()
-                                ->send()
-                                ->toDatabase();
-
-                            $record->update(['status' => 'ditolak']);
-                            $division_user = $record->division->user;
-                            $division_user->notify(
-                                Notification::make('Permintaan Ditolak')
-                                    ->title('Permintaan: ' . $record->id . ' Ditolak')
-                                    ->body("Alasan ditolak: " . $data['alasan_ditolak'])
-                                    ->danger()
-                                    ->toDatabase()
-                            );
-
-                            return redirect()->route('filament.supervisor.resources.submission-items.index');
-                        })
-                        ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
-
-                ])->footerActionsAlignment(Alignment::Center),
+                        ->required()
+                        ->disabled(),
+                ]),
             ]);
     }
 
@@ -117,7 +53,8 @@ class SubmissionItemResource extends Resource
                 Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -132,6 +69,11 @@ class SubmissionItemResource extends Resource
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_items')
+                    ->label('Total barang Diajukan')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_items_acc')
+                    ->label('Total barang Disetujui')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -147,13 +89,9 @@ class SubmissionItemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
@@ -167,7 +105,7 @@ class SubmissionItemResource extends Resource
     {
         return [
             'index' => Pages\ListSubmissionItems::route('/'),
-            'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
+            'view' => Pages\ViewSubmissionItem::route('/{record}'),
         ];
     }
 

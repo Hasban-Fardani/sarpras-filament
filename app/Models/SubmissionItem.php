@@ -25,4 +25,9 @@ class SubmissionItem extends Model
     {
         return $this->details->sum('qty');
     }
+
+    public function getTotalItemsAccAttribute()
+    {
+        return $this->details->sum('qty_acc');
+    }
 }

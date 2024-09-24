@@ -54,6 +54,7 @@ class DivisionPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                'can:division',
             ]);
     }
 }

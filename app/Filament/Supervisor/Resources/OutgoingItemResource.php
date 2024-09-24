@@ -100,4 +100,9 @@ class OutgoingItemResource extends Resource
             'index' => Pages\ListOutgoingItems::route('/'),
         ];
     }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 }

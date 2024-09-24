@@ -19,7 +19,7 @@ class SubmissionItemResource extends Resource
     protected static ?string $model = SubmissionItem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
+
     protected static ?string $navigationLabel = 'Pengadaan Barang';
 
     protected static ?string $navigationGroup = 'Pengajuan';
@@ -70,11 +70,7 @@ class SubmissionItemResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

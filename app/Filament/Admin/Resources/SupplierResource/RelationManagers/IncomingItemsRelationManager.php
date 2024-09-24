@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\SupplierResource\RelationManagers;
 
 use App\Models\Employee;
+use App\Models\IncomingItem;
 use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -43,9 +44,12 @@ class IncomingItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name'),
-                Tables\Columns\TextColumn::make('supplier.name'),
-                Tables\Columns\TextColumn::make('total_items'),
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Petugas'),
+                Tables\Columns\TextColumn::make('supplier.name')
+                    ->label('Supplier'),
+                Tables\Columns\TextColumn::make('total_items')
+                    ->label('Jumlah barang'),
             ])
             ->filters([
                 //
@@ -54,13 +58,10 @@ class IncomingItemsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->url(fn (IncomingItem $record): string => route('filament.admin.resources.incoming-items.view', $record)),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

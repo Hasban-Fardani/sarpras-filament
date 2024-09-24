@@ -2,6 +2,8 @@
 
 namespace App\Filament\Supervisor\Resources\SubmissionItemResource\RelationManagers;
 
+use App\Models\Item;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -18,9 +20,9 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')
+                Forms\Components\TextInput::make('qty_acc')
                     ->required()
-                    ->maxLength(255),
+                    ->numeric(),
             ]);
     }
 
@@ -44,12 +46,17 @@ class DetailsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
+    }
+
+    protected function canCreate(): bool
+    {
+        return false;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->getOwnerRecord()->status !== 'diajukan';
     }
 }

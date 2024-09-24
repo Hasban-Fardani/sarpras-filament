@@ -40,10 +40,7 @@ class SupervisorPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Supervisor/Widgets'), for: 'App\\Filament\\Supervisor\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -57,6 +54,7 @@ class SupervisorPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                'can:supervisor',
             ]);
     }
 }
