@@ -28,6 +28,7 @@ class DivisionPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->emailVerification()
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Blue,
             ])

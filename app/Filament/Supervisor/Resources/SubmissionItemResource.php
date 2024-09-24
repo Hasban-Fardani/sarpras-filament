@@ -9,6 +9,7 @@ use App\Models\SubmissionItem;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
@@ -38,9 +39,11 @@ class SubmissionItemResource extends Resource
                         ->required(),
                 ])->footerActions([
                     Action::make('setujui')
-                        ->color(Color::Blue),
+                        ->color(Color::Blue)
+                        ->visible(fn ($livewire): bool => $livewire instanceof EditRecord),
                     Action::make('tolak')
-                        ->color('danger'),
+                        ->color('danger')
+                        ->visible(fn ($livewire): bool => $livewire instanceof EditRecord),
                 ])->footerActionsAlignment(Alignment::Center),
             ]);
     }
@@ -105,5 +108,10 @@ class SubmissionItemResource extends Resource
             'index' => Pages\ListSubmissionItems::route('/'),
             'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

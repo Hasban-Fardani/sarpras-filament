@@ -5,10 +5,14 @@ namespace App\Filament\Supervisor\Resources;
 use App\Filament\Supervisor\Resources\RequestItemResource\Pages;
 use App\Filament\Supervisor\Resources\RequestItemResource\RelationManagers;
 use App\Models\Employee;
+use App\Models\OutgoingItem;
 use App\Models\RequestItem;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
@@ -40,13 +44,54 @@ class RequestItemResource extends Resource
                     Forms\Components\TextInput::make('status')
                         ->disabled(),
                 ])
-                ->footerActions([
-                    Action::make('setujui')
-                        ->color(Color::Blue),
-                    Action::make('tolak')
-                        ->color('danger'),
-                ])
-                ->footerActionsAlignment(Alignment::Center),
+                    ->footerActions([
+                        Action::make('setujui')
+                            ->color(Color::Blue)
+                            ->requiresConfirmation()
+                            ->modalHeading('Tolak Laporan')
+                            ->modalDescription('Laporan akan ditolak karena tidak sesuai')
+                            ->modalSubmitActionLabel('Kirim')
+                            ->modalCancelActionLabel('Batal')
+                            ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
+                            ->action(function (RequestItem $record) {
+                                $record->update(['status' => 'disetujui']);
+
+                                $division_employee = $record->employee;
+
+                                $items = [];
+
+                                $record->details->each(function ($detail) use (&$items, $division_employee) {
+                                    $items = array_merge($items, [
+                                        'item_id' => $detail->item_id,
+                                        'qty' => $detail->qty_acc,
+                                        'division_id' => $division_employee->id,
+                                        'operator_id' => Auth::user()->employee->id
+                                    ]);
+                                });
+
+                                OutgoingItem::insert($items);
+
+                                Notification::make()
+                                    ->title('Berhasil merubah status Permintaan')
+                                    ->success()
+                                    ->send();
+
+                                $division_user = $record->employee->user;
+                                $division_user->notify(
+                                    Notification::make('Revisi laporan')
+                                        ->title('Permintaan: ' . $record->id . ' Diterima')
+                                        ->body("Silahkan ambil barang ke gudang")
+                                        ->success()
+                                        ->toDatabase()
+                                );
+                            })
+                            ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
+                        Action::make('tolak')
+                            ->color('danger')
+                            ->visible(fn($livewire): bool => $livewire instanceof EditRecord),
+
+                    ])
+                    ->footerActionsAlignment(Alignment::Center),
             ]);
     }
 
@@ -107,5 +152,10 @@ class RequestItemResource extends Resource
             'index' => Pages\ListRequestItems::route('/'),
             'edit' => Pages\EditRequestItem::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }
