@@ -9,4 +9,9 @@ use Filament\Resources\Pages\EditRecord;
 class EditRequestItem extends EditRecord
 {
     protected static string $resource = RequestItemResource::class;
+
+    protected function getRedirectUrl(): ?string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

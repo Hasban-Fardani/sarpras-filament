@@ -9,4 +9,12 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewRequestItem extends ViewRecord
 {
     protected static string $resource = RequestItemResource::class;
+
+    protected function getActions(): array
+    {
+        return [
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
+        ];
+    }
 }

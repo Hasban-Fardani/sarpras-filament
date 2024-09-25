@@ -35,10 +35,15 @@ class RequestItemResource extends Resource
                     Forms\Components\Select::make('employee_id')
                         ->label('Nama Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->disabled(fn ($livewire) => $livewire instanceof ViewRecord),
-                    Forms\Components\TextInput::make('status')
-                        ->disabled()
-                        ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
+                        ->disabled(fn($livewire) => $livewire instanceof ViewRecord),
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'draf' => 'Draf',
+                            'diajukan' => 'Diajukan',
+                        ])
+                        ->default('draf')
+                        ->disabled(fn($livewire) => $livewire instanceof CreateRecord)
+                        ->hidden(fn($livewire) => $livewire instanceof CreateRecord),
                 ]),
             ]);
     }
@@ -82,6 +87,7 @@ class RequestItemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([]);
     }

@@ -33,6 +33,14 @@ class SubmissionItemResource extends Resource
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->required(),
+                    Forms\Components\Select::make('status')
+                        ->label('Status')
+                        ->options([
+                            'draf' => 'Draf',
+                            'diajukan' => 'Diajukan'
+                        ])
+                        ->default('draf')
+                        ->required()
                 ]),
             ]);
     }
@@ -48,7 +56,16 @@ class SubmissionItemResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->badge(),
+                    ->badge()
+                    ->color(function ($state) {
+                        $colors = [
+                            'draf' => 'secondary',
+                            'diajukan' => 'warning',
+                            'disetujui' => 'success',
+                            'ditolak' => 'danger',
+                        ];
+                        return $colors[$state];
+                    }),
                 Tables\Columns\TextColumn::make('total_items')
                     ->label('Jumlah Item')
                     ->numeric()
