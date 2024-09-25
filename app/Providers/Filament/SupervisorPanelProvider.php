@@ -26,7 +26,6 @@ class SupervisorPanelProvider extends PanelProvider
         return $panel
             ->id('supervisor')
             ->path('supervisor')
-            ->login()
             ->passwordReset()
             ->emailVerification()
             ->topNavigation()

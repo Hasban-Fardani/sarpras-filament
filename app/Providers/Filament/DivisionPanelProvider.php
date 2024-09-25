@@ -25,7 +25,6 @@ class DivisionPanelProvider extends PanelProvider
         return $panel
             ->id('division')
             ->path('division')
-            ->login()
             ->passwordReset()
             ->emailVerification()
             ->databaseNotifications()

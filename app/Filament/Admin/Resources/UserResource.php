@@ -29,9 +29,6 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\TextInput::make('username'),
-                    Forms\Components\TextInput::make('email')
-                        ->email()
-                        ->required(),
                     Forms\Components\Select::make('nip')
                         ->label('Pegawai')
                         ->options(Employee::all()->pluck('name', 'nip'))
