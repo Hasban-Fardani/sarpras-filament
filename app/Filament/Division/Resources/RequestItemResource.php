@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -35,9 +36,13 @@ class RequestItemResource extends Resource
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->default(Auth::user()->employee->id)
                         ->disabled(fn($livewire): bool => $livewire instanceof EditRecord),
-                    Forms\Components\TextInput::make('status')
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'draf' => 'Draf',
+                            'diajukan' => 'Diajukan',
+                        ])
                         ->default('draf')
-                        ->disabled()
+                        ->disabled(fn($livewire): bool => $livewire instanceof ListRecords)
                         ->hidden(fn($livewire): bool => $livewire instanceof CreateRecord),
                 ]),
             ]);
@@ -102,6 +107,7 @@ class RequestItemResource extends Resource
     {
         return [
             'index' => Pages\ListRequestItems::route('/'),
+            'create' => Pages\CreateRequestItem::route('/create'),
             'edit' => Pages\EditRequestItem::route('/{record}/edit'),
         ];
     }

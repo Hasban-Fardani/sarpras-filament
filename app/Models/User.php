@@ -64,6 +64,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     public function getFilamentName(): string
     {
+        $this->load('employee');
         return $this->employee->name ?? null;
     }
 }

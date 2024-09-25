@@ -8,6 +8,8 @@ use App\Models\Employee;
 use App\Models\RequestItem;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -33,9 +35,10 @@ class RequestItemResource extends Resource
                     Forms\Components\Select::make('employee_id')
                         ->label('Nama Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->disabled(),
+                        ->disabled(fn ($livewire) => $livewire instanceof ViewRecord),
                     Forms\Components\TextInput::make('status')
-                        ->disabled(),
+                        ->disabled()
+                        ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
                 ]),
             ]);
     }

@@ -9,6 +9,7 @@ use App\Models\SubmissionItem;
 use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
@@ -34,9 +35,13 @@ class SubmissionItemResource extends Resource
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->default(Auth::id()),
-                    Forms\Components\TextInput::make('status')
+                    Forms\Components\Select::make('status')
                         ->label('Status')
-                        ->disabled()
+                        ->options([
+                            'draf' => 'Draf',
+                            'diajukan' => 'Diajukan',
+                        ])
+                        ->hidden(fn ($livewire): bool => $livewire instanceof CreateRecord)
                 ]),
             ]);
     }
@@ -86,7 +91,7 @@ class SubmissionItemResource extends Resource
                     ->button()
                     ->requiresConfirmation()
                     ->modalHeading('Ajukan Pengadaan')
-                    ->modalDescription('Laporan akan diajukan')
+                    ->modalDescription('Pengajuan pengadaan akan diajukan')
                     ->action(function (SubmissionItem $record) {
                         $record->update([
                             'status' => 'diajukan',
@@ -98,7 +103,7 @@ class SubmissionItemResource extends Resource
                     ->hidden(function (SubmissionItem $record) {
                         return $record->status !== 'draf';
                     }),
-                Tables\Actions\EditAction::make()
+            Tables\Actions\EditAction::make()
                     ->color(Color::Yellow),
             ])
             ->bulkActions([
@@ -119,6 +124,7 @@ class SubmissionItemResource extends Resource
     {
         return [
             'index' => Pages\ListSubmissionItems::route('/'),
+            'create' => Pages\CreateSubmissionItem::route('/create'),
             'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];
     }

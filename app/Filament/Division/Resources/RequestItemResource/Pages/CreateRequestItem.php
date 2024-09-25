@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Division\Resources\SubmissionItemResource\Pages;
+namespace App\Filament\Division\Resources\RequestItemResource\Pages;
 
-use App\Filament\Division\Resources\SubmissionItemResource;
+use App\Filament\Division\Resources\RequestItemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateSubmissionItem extends CreateRecord
+class CreateRequestItem extends CreateRecord
 {
-    protected static string $resource = SubmissionItemResource::class;
+    protected static string $resource = RequestItemResource::class;
 
     protected static bool $canCreateAnother = false;
 

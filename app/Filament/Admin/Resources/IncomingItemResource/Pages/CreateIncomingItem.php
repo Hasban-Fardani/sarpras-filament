@@ -14,6 +14,6 @@ class CreateIncomingItem extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('view');
+        return $this->getResource()::getUrl('edit', ['record' => $this->getRecord()]);
     }
 }
