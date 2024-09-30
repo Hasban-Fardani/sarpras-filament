@@ -55,7 +55,8 @@ class RequestItemResource extends Resource
                 Tables\Columns\TextColumn::make('employee.name')
                     ->label('Pengaju')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()

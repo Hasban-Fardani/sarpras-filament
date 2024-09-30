@@ -59,11 +59,13 @@ class IncomingItemResource extends Resource
                 TextColumn::make('employee.name')
                     ->label('Petugas')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('supplier.name')
                     ->label('Supplier')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('total_items')
                     ->label('Jumlah Item')
                     ->numeric()
