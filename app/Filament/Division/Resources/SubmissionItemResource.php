@@ -26,6 +26,8 @@ class SubmissionItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Pengadaan Barang';
 
+    protected static ?string $pluralModelLabel = 'Pengadaan Barang';
+
     public static function form(Form $form): Form
     {
         return $form

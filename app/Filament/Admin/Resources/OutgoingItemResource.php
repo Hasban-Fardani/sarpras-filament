@@ -26,6 +26,8 @@ class OutgoingItemResource extends Resource
 
     protected static ?string $navigationGroup = 'Barang';
 
+    protected static ?string $pluralModelLabel = 'Barang Keluar';
+
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

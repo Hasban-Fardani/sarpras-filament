@@ -21,7 +21,9 @@ class OutgoingItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Barang Keluar';
+    protected static ?string $navigationLabel = 'Daftar Pengambilan Barang';
+
+    protected static ?string $pluralModelLabel = 'Pengambilan Barang';
 
     public static function form(Form $form): Form
     {

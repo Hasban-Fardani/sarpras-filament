@@ -22,6 +22,8 @@ class IncomingItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Barang Masuk';
 
+    protected static ?string $pluralModelLabel = 'Barang Masuk';
+
     public static function table(Table $table): Table
     {
         return $table

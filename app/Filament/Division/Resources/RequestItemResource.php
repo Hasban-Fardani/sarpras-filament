@@ -26,6 +26,8 @@ class RequestItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Permintaan Barang';
 
+    protected static ?string $pluralModelLabel = 'Permintaan Barang';
+
     public static function form(Form $form): Form
     {
         return $form

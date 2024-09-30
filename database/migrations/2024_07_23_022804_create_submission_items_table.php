@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('division_id');
             $table->text('note')->nullable();
             $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');
+            $table->text('perihal')->nullable();
+            $table->string('sifat')->nullable();
             $table->foreign('division_id')->references('id')->on('employees')->cascadeOnDelete();
             $table->timestamps();
         });

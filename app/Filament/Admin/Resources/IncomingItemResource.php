@@ -30,6 +30,8 @@ class IncomingItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Kelola Barang Masuk';
 
+    protected static ?string $pluralModelLabel = 'Barang Masuk';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
