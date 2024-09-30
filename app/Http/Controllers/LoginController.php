@@ -26,7 +26,7 @@ class LoginController extends Controller
         }
 
         if (!Auth::attempt($validator->validated())){
-            return back()->with('errors', 'invalid credentials');
+            return back()->with('errors', collect(['invalid credentials']));
         }
 
         return $this->redirect();
