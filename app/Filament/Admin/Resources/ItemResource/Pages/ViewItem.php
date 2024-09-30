@@ -6,7 +6,7 @@ use App\Filament\Admin\Resources\ItemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewItems extends ViewRecord
+class ViewItem extends ViewRecord
 {
     protected static string $resource = ItemResource::class;
 

@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    @if (!empty($errors))
-        {{ $errors }}
+    @if (!empty($errors) && count($errors) > 0)
+        {{ $errors->first() }}
     @endif
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -49,7 +49,6 @@
             </form>
         </div>
     </div>
-
 </body>
 
 </html>
