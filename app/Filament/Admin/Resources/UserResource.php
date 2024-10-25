@@ -28,7 +28,8 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()->schema([
-                    Forms\Components\TextInput::make('username'),
+                    Forms\Components\TextInput::make('username')
+                        ->columnSpanFull(),
                     Forms\Components\Select::make('nip')
                         ->label('Pegawai')
                         ->options(Employee::all()->pluck('name', 'nip'))
@@ -41,6 +42,9 @@ class UserResource extends Resource
                         ])
                         ->required(),
                     Forms\Components\TextInput::make('password')
+                        ->password()
+                        ->required(),
+                    Forms\Components\TextInput::make('password_confirmation')
                         ->password()
                         ->required(),
                 ])->columns(2),

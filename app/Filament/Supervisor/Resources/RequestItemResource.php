@@ -63,17 +63,21 @@ class RequestItemResource extends Resource
 
                                 $items = [];
 
-                                $record->details->each(function ($detail) use (&$items, $division_employee) {
+                                $outgoingItem = OutgoingItem::create([
+                                    'operator_id' => Auth::user()->employee->id,
+                                    'division_id' => $division_employee->id 
+                                ]);
+    
+                                $record->details->each(function ($detail) use (&$items, $outgoingItem) {
                                     array_push($items, [
+                                        'outgoing_item_id' => $outgoingItem->id,
                                         'item_id' => $detail->item_id,
                                         'qty' => $detail->qty_acc,
-                                        'division_id' => $division_employee->id,
-                                        'operator_id' => Auth::user()->employee->id,
                                         'created_at' => now()
                                     ]);
                                 });
-
-                                OutgoingItem::insert($items);
+                                
+                                $outgoingItem->details()->insert($items);
 
                                 Notification::make()
                                     ->title('Berhasil merubah status Permintaan')
@@ -139,6 +143,7 @@ class RequestItemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('employee.name')
                     ->label('Pengaju')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()

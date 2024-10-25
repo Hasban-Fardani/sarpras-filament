@@ -32,7 +32,10 @@ class RequestItem extends Model
 
     protected static function booted()
     {
-        static::created(function (RequestItem $requestItem) {
+        static::updated(function (RequestItem $requestItem) {
+            if ($requestItem->status != 'diajukan') {
+                return; 
+            }
             $notifiables = User::whereIn('role', ['supervisor', 'admin'])->get();
             $notifiables->each(function ($notifiable) use ($requestItem) {
                 // generate url to see detail by role

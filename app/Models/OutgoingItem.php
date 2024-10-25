@@ -52,14 +52,28 @@ class OutgoingItem extends Model
                         ->title('Barang Keluar Baru')
                         ->body('Barang Keluar Baru ' . $outgoingItem->id)
                         ->color(Color::Blue)
-                        // ->actions(
-                        //     ActionGroup::make([
-                        //         StaticAction::make('lihat')->url($url)->name('Lihat')
-                        //     ])
-                        // )
                         ->toDatabase(),
                 );
             });
+        });
+
+        static::updated(function (OutgoingItem $outgoingItem) {
+            if (!$outgoingItem->is_taken) {
+                return;
+            }
+
+            $outgoingItem->details->each(function (OutgoingItemDetail $detail) {
+                $detail->item()->decrement('stock', $detail->qty);
+            });
+
+            $outgoingItem->load('operator.user');
+            $outgoingItem->operator->user->notify(
+                Notification::make()
+                    ->title('Barang Telah Diambil')
+                    ->body('Barang telah diambil oleh ' . $outgoingItem->division->name)
+                    ->color(Color::Green)
+                    ->toDatabase(),
+            );
         });
     }
 }

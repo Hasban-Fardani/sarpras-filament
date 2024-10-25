@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Filament\Admin\Widgets;
+namespace App\Filament\Supervisor\Widgets;
 
 use App\Models\Employee;
 use App\Models\IncomingItemDetail;
 use App\Models\Item;
-use App\Models\OutgoingItem;
 use App\Models\OutgoingItemDetail;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -20,7 +19,7 @@ class StatsOverview extends BaseWidget
         $employees_count = Employee::count();
 
         return [
-            Stat::make('Jumlah Item', $items_count),
+            Stat::make('Barang', $items_count),
             Stat::make('Barang Masuk', $incoming_items_count),
             Stat::make('Barang Keluar', $outgoing_items_count),
             Stat::make('Pegawai', $employees_count),

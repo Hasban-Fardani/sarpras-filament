@@ -6,10 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "charrafimed/global-search-modal": "^3.4",
         "eightynine/filament-excel-import": "^3.1",
         "filament/actions": "^3.2",
         "filament/filament": "^3.2",
         "filament/notifications": "^3.2",
+        "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.28",
         "laravel/tinker": "^2.9"
     },

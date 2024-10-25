@@ -23,44 +23,12 @@ class OutgoingItemResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Barang Keluar';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('operator_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('division_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('item_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('qty')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\Textarea::make('note')
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_taken')
-                    ->required(),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('operator.name')
                     ->label('Petugas Gudang')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('item.name')
-                    ->label('Barang')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('qty')
-                    ->label('Jumlah')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('note')

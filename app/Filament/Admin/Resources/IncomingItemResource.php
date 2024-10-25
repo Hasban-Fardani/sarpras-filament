@@ -32,6 +32,8 @@ class IncomingItemResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Barang Masuk';
 
+    protected static ?string $recordTitleAttribute = 'employee.name';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form

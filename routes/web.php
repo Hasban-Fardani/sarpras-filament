@@ -5,5 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index'])
     ->name('login');
-Route::post('/', [LoginController::class, 'login'])
-    ->name('login');
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.post');
+

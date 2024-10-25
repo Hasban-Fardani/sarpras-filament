@@ -15,21 +15,25 @@ class ItemImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('name')
+            ImportColumn::make('nama')
                 ->label('nama')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('unit')
+            ImportColumn::make('kategori')
+                ->label('kategori')
+                ->requiredMapping()
+                ->rules(['required', 'max:255']),
+            ImportColumn::make('satuan')
                 ->label('satuan')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('merk')
                 ->label('merk')
                 ->rules(['max:255']),
-            ImportColumn::make('type')
+            ImportColumn::make('jenis')
                 ->label('tipe')
                 ->rules(['max:255']),
-            ImportColumn::make('size')
+            ImportColumn::make('ukuran')
                 ->label('ukuran')
                 ->rules(['max:255']),
             ImportColumn::make('stock')
@@ -42,7 +46,7 @@ class ItemImporter extends Importer
                 ->requiredMapping()
                 ->numeric()
                 ->rules(['required', 'integer']),
-            ImportColumn::make('price')
+            ImportColumn::make('harga')
                 ->label('harga')
                 ->requiredMapping()
                 ->numeric()
@@ -52,21 +56,21 @@ class ItemImporter extends Importer
 
     public function resolveRecord(): ?Item
     {
-        $category = Category::where('name', $this->data['category'])->first();
+        $category = Category::where('name', $this->data['kategori'])->first();
         if (!$category) {
             $category = Category::create([
                 'name' => $this->data['category'],
             ]);
         }
         return Item::create([
-            'name' => $this->data['name'],
+            'name' => $this->data['nama'],
             'unit' => $this->data['unit'],
-            'merk' => $this->data['merk'],
-            'type' => $this->data['type'],
-            'size' => $this->data['size'],
+            'merk' => $this->data['merek'],
+            'type' => $this->data['jenis'],
+            'size' => $this->data['ukuran'],
             'stock' => $this->data['stock'],
             'min_stock' => $this->data['min_stock'],
-            'price' => $this->data['price'],
+            'price' => $this->data['harga'],
             'category_id' => $category->id,
         ]);
     }

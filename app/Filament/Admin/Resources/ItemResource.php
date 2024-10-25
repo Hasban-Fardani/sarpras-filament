@@ -31,6 +31,8 @@ class ItemResource extends Resource
     protected static ?string $navigationLabel = 'Kelola Data Barang';
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -145,7 +147,7 @@ class ItemResource extends Resource
                 ImportAction::make()
                     ->importer(ItemImporter::class)
                     ->label('Import Data')
-                    ->icon('heroicon-o-folder-plus')
+                    ->icon('heroicon-o-folder-plus'),
             ])
             ->actions([
                 ActionGroup::make([

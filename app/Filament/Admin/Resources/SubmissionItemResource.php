@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class SubmissionItemResource extends Resource
 {
@@ -34,7 +35,8 @@ class SubmissionItemResource extends Resource
                     Forms\Components\Select::make('division_id')
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
-                        ->required(),
+                        ->required()
+                        ->default(Auth::user()->employee->id),
                     Forms\Components\Select::make('status')
                         ->label('Status')
                         ->options([
@@ -103,6 +105,7 @@ class SubmissionItemResource extends Resource
     {
         return [
             'index' => Pages\ListSubmissionItems::route('/'),
+            'create' => Pages\CreateSubmissionItem::route('/create'),
             'view' => Pages\ViewSubmissionItem::route('/{record}'),
             'edit' => Pages\EditSubmissionItem::route('/{record}/edit'),
         ];

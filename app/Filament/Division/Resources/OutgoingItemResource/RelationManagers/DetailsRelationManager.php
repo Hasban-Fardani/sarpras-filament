@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Filament\Admin\Resources\SubmissionItemResource\RelationManagers;
+namespace App\Filament\Division\Resources\OutgoingItemResource\RelationManagers;
 
-use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -15,32 +14,13 @@ class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('item_id')
-                    ->label('Barang')
-                    ->options(Item::all()->pluck('name', 'id'))
-                    ->required(),
-                Forms\Components\TextInput::make('qty')
-                    ->label('Qty')
-                    ->numeric()
-                    ->required(),
-            ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id')
+            ->recordTitleAttribute('item_id')
             ->columns([
-                Tables\Columns\TextColumn::make('item.name')
-                    ->label('Barang'),
-                Tables\Columns\TextColumn::make('qty')
-                    ->label('Jumlah'),
-                Tables\Columns\TextColumn::make('qty_acc')
-                    ->label('Jumlah ACC'),
+                Tables\Columns\TextColumn::make('item.name'),
+                Tables\Columns\TextColumn::make('qty'),
             ])
             ->filters([
                 //

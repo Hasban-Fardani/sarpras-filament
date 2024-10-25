@@ -22,7 +22,7 @@ return new class extends Migration
         });
 
         Schema::create('job_batches', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->integer('total_jobs');
             $table->integer('pending_jobs');

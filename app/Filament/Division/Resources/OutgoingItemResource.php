@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,10 +36,6 @@ class OutgoingItemResource extends Resource
                 Forms\Components\TextInput::make('division_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('qty')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
                 Forms\Components\Textarea::make('note')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('status')
@@ -55,17 +52,10 @@ class OutgoingItemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('operator.name')
                     ->label('Petugas Gudang')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('item.name')
-                    ->label('Barang')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('qty')
-                    ->label('Jumlah')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('note')
+                    ->searchable()
                     ->label('Catatan'),
                 Tables\Columns\TextColumn::make('is_taken')
                     ->label('Status')
@@ -75,18 +65,15 @@ class OutgoingItemResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Diperbarui')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\Filter::make('is_taken')
+                    ->toggle()
+                    ->label('Sudah Diambil'),
+            ], layout: FiltersLayout::Dropdown)
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('diambil')
                     ->label('Sudah Diambil')
                     ->button()
@@ -108,7 +95,7 @@ class OutgoingItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailsRelationManager::class,
         ];
     }
 

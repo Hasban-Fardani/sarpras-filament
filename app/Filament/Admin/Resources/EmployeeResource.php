@@ -22,6 +22,8 @@ class EmployeeResource extends Resource
     protected static ?string $navigationLabel = 'Kelola Data Pegawai';
     protected static ?int $navigationSort = 2;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form

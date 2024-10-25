@@ -54,18 +54,22 @@ class ViewRequestItem extends ViewRecord
                             $division_employee = $record->employee;
 
                             $items = [];
+                            
+                            $outgoingItem = OutgoingItem::create([
+                                'operator_id' => Auth::user()->employee->id,
+                                'division_id' => $division_employee->id 
+                            ]);
 
-                            $record->details->each(function ($detail) use (&$items, $division_employee) {
+                            $record->details->each(function ($detail) use (&$items, $outgoingItem) {
                                 array_push($items, [
+                                    'outgoing_item_id' => $outgoingItem->id,
                                     'item_id' => $detail->item_id,
                                     'qty' => $detail->qty_acc,
-                                    'division_id' => $division_employee->id,
-                                    'operator_id' => Auth::user()->employee->id,
                                     'created_at' => now()
                                 ]);
                             });
-
-                            OutgoingItem::insert($items);
+                            
+                            $outgoingItem->details()->insert($items);
 
                             Notification::make()
                                 ->title('Berhasil merubah status Permintaan')
@@ -84,8 +88,8 @@ class ViewRequestItem extends ViewRecord
 
                             return redirect()->route('filament.supervisor.resources.request-items.index');
                         })
-                        ->visible(fn($livewire): bool => $livewire instanceof ViewRecord)
-                        ->hidden(fn(RequestItem $record): bool => $record->status !== 'diajukan'),
+                        ->visible(fn($livewire): bool => $livewire instanceof ViewRecord)  // display on ViewRecord Only
+                        ->hidden(fn(RequestItem $record): bool => $record->status !== 'diajukan'),  // hidden if status is not 'diajukan'
                     Action::make('tolak')
                         ->color('danger')
                         ->requiresConfirmation()
@@ -123,7 +127,6 @@ class ViewRequestItem extends ViewRecord
                         ->hidden(fn(RequestItem $record): bool => $record->status !== 'diajukan'),
                 ])
                 ->footerActionsAlignment(Alignment::Center),
-
         ]);
     }
 }

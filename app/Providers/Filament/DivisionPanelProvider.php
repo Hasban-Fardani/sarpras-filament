@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Division\Widgets as DivisionWidgets;
 
 class DivisionPanelProvider extends PanelProvider
 {
@@ -39,6 +40,7 @@ class DivisionPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Division/Widgets'), for: 'App\\Filament\\Division\\Widgets')
             ->widgets([
+                DivisionWidgets\StatsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,

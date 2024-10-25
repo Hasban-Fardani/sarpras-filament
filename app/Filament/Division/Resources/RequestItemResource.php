@@ -44,7 +44,7 @@ class RequestItemResource extends Resource
                             'diajukan' => 'Diajukan',
                         ])
                         ->default('draf')
-                        ->disabled(fn($livewire): bool => $livewire instanceof ListRecords)
+                        ->disabled()
                         ->hidden(fn($livewire): bool => $livewire instanceof CreateRecord),
                 ]),
             ]);

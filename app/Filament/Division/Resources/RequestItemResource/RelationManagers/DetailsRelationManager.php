@@ -22,7 +22,8 @@ class DetailsRelationManager extends RelationManager
                 Forms\Components\Select::make('item_id')
                     ->label('Barang')
                     ->options(Item::all()->pluck('name', 'id'))
-                    ->required(),
+                    ->required()
+                    ->searchable(),
                 Forms\Components\TextInput::make('qty')
                     ->label('Jumlah')
                     ->numeric()

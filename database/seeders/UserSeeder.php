@@ -30,5 +30,11 @@ class UserSeeder extends Seeder
             'role' => 'division',
             'nip' => '1234567892'
         ]);
+
+        User::factory()->create([
+            'email' => 'zim.zim@localhost.test',
+            'role' => 'division',
+            'nip' => '1234567893'
+        ]);
     }
 }

@@ -48,12 +48,11 @@ class ViewSubmissionItem extends ViewRecord
                         ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
                         ->action(function (SubmissionItem $record) {
                             // check if submission detail item qty is 0
-
                             if ($record->total_items_acc == 0) {
                                 Notification::make()
                                     ->title('Permintaan Gagal')
                                     ->warning()
-                                    ->body('Permintaan tidak dapat diterima, karena total item acc =0')
+                                    ->body('Permintaan tidak dapat diterima, karena total item acc = 0')
                                     ->send()
                                     ->toDatabase();
                                 return;
@@ -70,9 +69,8 @@ class ViewSubmissionItem extends ViewRecord
 
                             $division_user = $record->division->user;
                             $division_user->notify(
-                                Notification::make('Permintaan Diterima')
-                                    ->title('Permintaan: ' . $record->id . ' Diterima')
-                                    ->body("Silahkan ambil barang ke gudang")
+                                Notification::make('Pengadaan Disetujui')
+                                    ->title('Pengadaan: ' . $record->id . 'Disetujui')
                                     ->success()
                                     ->toDatabase()
                             );
@@ -116,7 +114,6 @@ class ViewSubmissionItem extends ViewRecord
                         })
                         ->visible(fn($livewire): bool => $livewire instanceof ViewRecord)
                         ->hidden(fn(SubmissionItem $record): bool => $record->status !== 'diajukan'),
-
                 ])->footerActionsAlignment(Alignment::Center),
         ]);
     }
