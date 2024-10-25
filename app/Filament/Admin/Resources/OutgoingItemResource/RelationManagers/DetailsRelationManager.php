@@ -2,12 +2,12 @@
 
 namespace App\Filament\Admin\Resources\OutgoingItemResource\RelationManagers;
 
+use App\Models\Item;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,13 +20,12 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_id')
-                    ->label('Barang')
-                    ->options(\App\Models\Item::all()->pluck('name', 'id'))
-                    ->required(),
-                TextInput::make('qty')
-                    ->label('Jumlah')
-                    ->numeric()
+                Forms\Components\TextInput::make('qty')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('item_id')
+                    ->relationship('item', 'name')
+                    ->preload()
                     ->required(),
             ]);
     }
@@ -34,7 +33,7 @@ class DetailsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id')
+            ->recordTitleAttribute('item_id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('item.name'),
@@ -55,5 +54,15 @@ class DetailsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function configureCreateAction(CreateAction $action): void
+    {
+        $action
+            ->authorize(static fn (RelationManager $livewire): bool => (! $livewire->isReadOnly()) && $livewire->canCreate())
+            ->form(fn (Form $form): Form => $this->form($form->columns(2)))
+            ->after(function (array $data): void {
+                Item::find($data['item_id'])->decrement('stock', $data['qty']);
+            });
     }
 }

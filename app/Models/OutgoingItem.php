@@ -15,6 +15,11 @@ class OutgoingItem extends Model
 
     protected $guarded = ['id'];
 
+    public function details()
+    {
+        return $this->hasMany(OutgoingItemDetail::class);
+    }
+    
     public function operator()
     {
         return $this->belongsTo(Employee::class, 'operator_id');

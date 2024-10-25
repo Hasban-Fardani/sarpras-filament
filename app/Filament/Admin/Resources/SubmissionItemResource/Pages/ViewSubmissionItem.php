@@ -9,4 +9,12 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewSubmissionItem extends ViewRecord
 {
     protected static string $resource = SubmissionItemResource::class;
+    
+    protected function getActions(): array
+    {
+        return [
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
+        ];
+    }
 }

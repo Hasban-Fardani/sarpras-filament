@@ -21,7 +21,7 @@ class RequestItemResource extends Resource
 {
     protected static ?string $model = RequestItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-up';
 
     protected static ?string $navigationLabel = 'Permintaan Barang';
 

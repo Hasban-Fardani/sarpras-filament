@@ -4,12 +4,20 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ItemResource\Pages;
 use App\Filament\Admin\Resources\ItemResource\RelationManagers;
+use App\Filament\Imports\ItemImporter;
 use App\Models\Category;
 use App\Models\Item;
 use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,11 +26,10 @@ class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-archive-box';
     protected static ?string $navigationGroup = 'Barang';
     protected static ?string $navigationLabel = 'Kelola Data Barang';
     protected static ?int $navigationSort = 1;
-
 
     public static function form(Form $form): Form
     {
@@ -112,7 +119,7 @@ class ItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('min_stock')
-                    ->label('Stok Minimum')
+                    ->label('Min.Stok')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit')
@@ -124,12 +131,28 @@ class ItemResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->multiple()
+                    ->relationship('category', 'name')
+                    ->preload(),
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersTriggerAction(
+                fn (Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(ItemImporter::class)
+                    ->label('Import Data')
+                    ->icon('heroicon-o-folder-plus')
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -17,35 +17,40 @@ class EmployeeSeeder extends Seeder
             "name" => "Sutarsa",
             "email" => "sutarsa@localhost.test",
             'position' => 'Wakasek Sarana Prasarana',
-            "nip" => "1234567890"
+            "nip" => "1234567890",
+            "phone" => "081234567890"
         ]);
         
         Employee::create([
             "name" => "Toni",
             "email" => "toni@localhost.test",
             'position' => 'Petugas Sarana prasarana',
-            "nip" => "1234567891"
+            "nip" => "1234567891",
+            "phone" => "081234567891"
         ]);
 
         Employee::create([
             "name" => "Ani",
             "email" => "ani@localhost.test",
             'position' => 'Ketua Program RPL',
-            "nip" => "1234567892"
+            "nip" => "1234567892",
+            "phone" => "081234567892"
         ]);
 
         Employee::create([
             "name" => "Zim zim",
             "email" => "zim.zim@localhost.test",
             'position' => 'Ketua Program DKV',
-            "nip" => "1234567893"
+            "nip" => "1234567893",
+            "phone" => "081234567893"
         ]);
 
         Employee::create([
             "name" => "Sri",
             "email" => "sri@localhost.test",
             'position' => 'Kepala Sekolah',
-            "nip" => "1234567894"
+            "nip" => "1234567894",
+            "phone" => "081234567894"
         ]);
     }
 }

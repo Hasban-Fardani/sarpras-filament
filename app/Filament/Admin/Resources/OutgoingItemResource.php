@@ -5,8 +5,8 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\OutgoingItemResource\Pages;
 use App\Filament\Admin\Resources\OutgoingItemResource\RelationManagers;
 use App\Models\OutgoingItem;
-use Filament\Forms;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -20,7 +20,7 @@ class OutgoingItemResource extends Resource
 {
     protected static ?string $model = OutgoingItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-right-on-rectangle';
 
     protected static ?string $navigationLabel = 'Kelola Barang Keluar';
 
@@ -35,19 +35,19 @@ class OutgoingItemResource extends Resource
         return $form
             ->schema([
                 Section::make()->schema([
-                    TextInput::make('operator_id')
-                        ->required()
-                        ->numeric(),
-                    TextInput::make('division_id')
-                        ->required()
-                        ->numeric(),
-                    TextInput::make('qty')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
+                    Select::make('operator_id')
+                        ->label('Operator')
+                        ->relationship('operator', 'name')
+                        ->preload()
+                        ->required(),
+                    Select::make('division_id')
+                        ->label('Nama Kepala Divisi')
+                        ->relationship('division', 'name')
+                        ->preload()
+                        ->required(),
                     Textarea::make('note')
                         ->columnSpanFull(),
-                ])->columns(3),
+                ])->columns(2),
             ]);
     }
 
@@ -65,14 +65,6 @@ class OutgoingItemResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('item.name')
-                    ->label('Barang')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('qty')
-                    ->label('Jumlah')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime()
@@ -87,6 +79,7 @@ class OutgoingItemResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -99,6 +92,7 @@ class OutgoingItemResource extends Resource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\DetailsRelationManager::class
         ];
     }
 
@@ -107,6 +101,8 @@ class OutgoingItemResource extends Resource
         return [
             'index' => Pages\ListOutgoingItems::route('/'),
             'create' => Pages\CreateOutgoingItem::route('/create'),
+            'edit' => Pages\EditOutgoingItem::route('/edit/{record}'),
+            'view' => Pages\ViewOutgoingItem::route('/{record}'),
         ];
     }
 }
