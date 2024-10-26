@@ -24,8 +24,12 @@ class DetailsRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('item_id')
-                    ->relationship('item', 'name')
-                    ->preload()
+                    ->options(function (callable $get) {
+                        $exists_items_id = $this->ownerRecord->load('details')->details->pluck('item_id');
+                        return Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                    })
+                    ->reactive()
+                    ->searchable()
                     ->required(),
             ]);
     }
@@ -59,8 +63,8 @@ class DetailsRelationManager extends RelationManager
     protected function configureCreateAction(CreateAction $action): void
     {
         $action
-            ->authorize(static fn (RelationManager $livewire): bool => (! $livewire->isReadOnly()) && $livewire->canCreate())
-            ->form(fn (Form $form): Form => $this->form($form->columns(2)))
+            ->authorize(static fn(RelationManager $livewire): bool => (! $livewire->isReadOnly()) && $livewire->canCreate())
+            ->form(fn(Form $form): Form => $this->form($form->columns(2)))
             ->after(function (array $data): void {
                 Item::find($data['item_id'])->decrement('stock', $data['qty']);
             });

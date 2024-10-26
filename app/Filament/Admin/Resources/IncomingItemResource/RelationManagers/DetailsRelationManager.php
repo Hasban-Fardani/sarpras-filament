@@ -29,6 +29,7 @@ class DetailsRelationManager extends RelationManager
                         return Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
                     })
                     ->reactive()
+                    ->searchable()
                     ->required(),
                 TextInput::make('qty')
                     ->label('Jumlah')

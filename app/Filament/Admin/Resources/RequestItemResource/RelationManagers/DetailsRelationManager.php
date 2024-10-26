@@ -21,7 +21,12 @@ class DetailsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('item_id')
                     ->label('Barang')
-                    ->options(Item::all()->pluck('name', 'id'))
+                    ->options(function (callable $get) {
+                        $exists_items_id = $this->ownerRecord->load('details')->details->pluck('item_id'); 
+                        return Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                    })
+                    ->reactive()
+                    ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('qty')
                     ->label('Jumlah')

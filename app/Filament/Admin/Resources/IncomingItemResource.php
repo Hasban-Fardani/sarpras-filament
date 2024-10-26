@@ -71,7 +71,7 @@ class IncomingItemResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('total_items')
-                    ->label('Jumlah Item')
+                    ->label('Jumlah Barang')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
@@ -65,6 +66,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     public function getFilamentName(): string
     {
         $this->load('employee');
+        Log::info('employee user name : ' . $this->employee->name);
         return $this->employee->name ?? null;
     }
 }

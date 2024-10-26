@@ -21,8 +21,6 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
-use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
 class SupervisorPanelProvider extends PanelProvider
 {
@@ -35,18 +33,10 @@ class SupervisorPanelProvider extends PanelProvider
             ->emailVerification()
             ->topNavigation()
             ->databaseNotifications()
-            ->plugins([
-                FilamentEditProfilePlugin::make()
-                    ->shouldRegisterNavigation(false),
-            ])
-            ->userMenuItems([
-                'profile' => MenuItem::make()
-                    ->label(fn() => Auth::user()->name)
-                    ->url(fn(): string => EditProfilePage::getUrl())
-                    ->icon('heroicon-m-user-circle'),
-            ])
+            ->plugins([])
+            ->brandName('Panel Kepsek')
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => Color::Purple,
             ])
             ->discoverResources(in: app_path('Filament/Supervisor/Resources'), for: 'App\\Filament\\Supervisor\\Resources')
             ->discoverPages(in: app_path('Filament/Supervisor/Pages'), for: 'App\\Filament\\Supervisor\\Pages')

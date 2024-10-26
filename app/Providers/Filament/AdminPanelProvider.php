@@ -21,20 +21,17 @@ use App\Filament\Admin\Widgets as AdminWidgets;
 use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Filament\Navigation\MenuItem;
 use Illuminate\Support\Facades\Auth;
-use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
-use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
             ->id('admin')
             ->path('admin')
             ->passwordReset()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->navigationGroups([
                 'Barang',
@@ -42,18 +39,10 @@ class AdminPanelProvider extends PanelProvider
                 'Laporan',
                 'Pengguna & Akun'
             ])
+            ->brandName('Panel Admin')
             ->plugins([
-                FilamentEditProfilePlugin::make()
-                    ->shouldRegisterNavigation(false),
                 GlobalSearchModalPlugin::make()
             ])
-            ->userMenuItems([
-                'profile' => MenuItem::make()
-                    ->label(fn() => Auth::user()->name)
-                    ->url(fn (): string => EditProfilePage::getUrl())
-                    ->icon('heroicon-m-user-circle'),
-            ])
-            ->sidebarWidth('280px')
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')

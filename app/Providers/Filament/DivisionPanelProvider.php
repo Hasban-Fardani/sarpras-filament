@@ -30,9 +30,11 @@ class DivisionPanelProvider extends PanelProvider
             ->emailVerification()
             ->databaseNotifications()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Green,
             ])
             ->topNavigation()
+            ->plugins([])
+            ->brandName('Panel Divisi')
             ->discoverResources(in: app_path('Filament/Division/Resources'), for: 'App\\Filament\\Division\\Resources')
             ->discoverPages(in: app_path('Filament/Division/Pages'), for: 'App\\Filament\\Division\\Pages')
             ->pages([

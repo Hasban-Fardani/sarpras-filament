@@ -13,4 +13,6 @@ class InOutItemReportPage extends Page
     protected static ?string $navigationGroup = 'Laporan';
 
     protected static ?string $navigationLabel = 'Laporan Barang Masuk Keluar';
+
+    
 }
