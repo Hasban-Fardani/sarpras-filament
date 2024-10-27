@@ -22,7 +22,7 @@ class RequestItemResource extends Resource
 {
     protected static ?string $model = RequestItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-up';
 
     protected static ?string $navigationLabel = 'Permintaan Barang';
 
@@ -55,9 +55,9 @@ class RequestItemResource extends Resource
         $user = Auth::user();
         $user->load('employee');
         return $table
-            ->query(RequestItem::where('employee_id', $user->employee->id))
+            ->query(RequestItem::where('division_id', $user->employee->id))
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name')
+                Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')

@@ -23,7 +23,7 @@ class StatsOverview extends BaseWidget
             Stat::make('Jumlah Item', $items_count),
             Stat::make('Barang Masuk', $incoming_items_count),
             Stat::make('Barang Keluar', $outgoing_items_count),
-            Stat::make('Pegawai', $employees_count),
+            Stat::make('Jumlah Pegawai', $employees_count),
         ];
     }
 }

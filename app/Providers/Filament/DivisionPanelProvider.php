@@ -43,6 +43,7 @@ class DivisionPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Division/Widgets'), for: 'App\\Filament\\Division\\Widgets')
             ->widgets([
                 DivisionWidgets\StatsOverview::class,
+                DivisionWidgets\SubmissionRequestItemChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

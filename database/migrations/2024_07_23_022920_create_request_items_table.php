@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('request_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id');
-            $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnDelete();
+            $table->unsignedBigInteger('division_id');
+            $table->unsignedBigInteger('operator_id')->nullable();
+            $table->foreign('division_id')->references('id')->on('employees')->cascadeOnDelete();
+            $table->foreign('operator_id')->references('id')->on('employees')->cascadeOnDelete();
             $table->text('perihal')->nullable();
             $table->string('sifat')->nullable();
             $table->enum('status', ['draf', 'diajukan', 'disetujui', 'ditolak'])->default('draf');

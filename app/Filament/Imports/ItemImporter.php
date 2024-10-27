@@ -15,25 +15,26 @@ class ItemImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('nama')
+            ImportColumn::make('name')
                 ->label('nama')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('kategori')
                 ->label('kategori')
+                ->relationship('category', 'name')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('satuan')
+            ImportColumn::make('unit')
                 ->label('satuan')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('merk')
                 ->label('merk')
                 ->rules(['max:255']),
-            ImportColumn::make('jenis')
+            ImportColumn::make('type')
                 ->label('tipe')
                 ->rules(['max:255']),
-            ImportColumn::make('ukuran')
+            ImportColumn::make('size')
                 ->label('ukuran')
                 ->rules(['max:255']),
             ImportColumn::make('stock')
@@ -46,7 +47,7 @@ class ItemImporter extends Importer
                 ->requiredMapping()
                 ->numeric()
                 ->rules(['required', 'integer']),
-            ImportColumn::make('harga')
+            ImportColumn::make('price')
                 ->label('harga')
                 ->requiredMapping()
                 ->numeric()
@@ -63,14 +64,14 @@ class ItemImporter extends Importer
             ]);
         }
         return Item::create([
-            'name' => $this->data['nama'],
+            'name' => $this->data['name'],
             'unit' => $this->data['unit'],
-            'merk' => $this->data['merek'],
-            'type' => $this->data['jenis'],
-            'size' => $this->data['ukuran'],
+            'merk' => $this->data['merk'],
+            'type' => $this->data['type'],
+            'size' => $this->data['size'],
             'stock' => $this->data['stock'],
             'min_stock' => $this->data['min_stock'],
-            'price' => $this->data['harga'],
+            'price' => $this->data['price'],
             'category_id' => $category->id,
         ]);
     }

@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Filament\Admin\Widgets;
+namespace App\Filament\Supervisor\Widgets;
 
 use App\Models\IncomingItem;
 use App\Models\OutgoingItem;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class InOutItemChart extends ChartWidget
 {
-    protected static ?string $heading = 'Barang Masuk & Keluar';
-    protected int | string | array $columnSpan = '1';
+    protected static ?string $heading = 'Barang Masuk/Keluar';
     protected static ?int $sort = 2;
 
     protected function getData(): array

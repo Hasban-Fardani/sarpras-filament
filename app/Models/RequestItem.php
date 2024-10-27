@@ -15,9 +15,14 @@ class RequestItem extends Model
 
     protected $guarded = ['id'];
 
-    public function employee()
+    public function division()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'division_id');
+    }
+
+    public function operator()
+    {
+        return $this->belongsTo(Employee::class, 'operator_id');
     }
 
     public function details()

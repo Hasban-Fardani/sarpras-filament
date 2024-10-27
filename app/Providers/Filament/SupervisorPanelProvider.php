@@ -46,6 +46,8 @@ class SupervisorPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Supervisor/Widgets'), for: 'App\\Filament\\Supervisor\\Widgets')
             ->widgets([
                 SupervisorWidgets\StatsOverview::class,
+                SupervisorWidgets\InOutItemChart::class,
+                SupervisorWidgets\SubmissionRequestItemChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

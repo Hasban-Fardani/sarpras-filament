@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Filament\Admin\Widgets;
+namespace App\Filament\Supervisor\Widgets;
 
-use App\Models\IncomingItem;
-use App\Models\OutgoingItem;
+use App\Models\RequestItem;
+use App\Models\SubmissionItem;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
-class InOutItemChart extends ChartWidget
+class SubmissionRequestItemChart extends ChartWidget
 {
-    protected static ?string $heading = 'Barang Masuk & Keluar';
-    protected int | string | array $columnSpan = '1';
+    protected static ?string $heading = 'Pengajuan Pengadaan & Permintaan';
     protected static ?int $sort = 2;
 
     protected function getData(): array
     {
         // Query data Barang Masuk dan group by bulan
-        $barangMasuk = IncomingItem::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+        $submission = SubmissionItem::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('count', 'month')
             ->toArray();
 
         // Query data Barang Keluar dan group by bulan
-        $barangKeluar = OutgoingItem::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+        $request_item = RequestItem::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('count', 'month')
@@ -34,23 +34,23 @@ class InOutItemChart extends ChartWidget
         $labels = collect(range(1, 12))->map(fn($month) => Carbon::createFromFormat('m', $month)->format('M'))->toArray();
 
         // Mapping data agar sesuai dengan urutan bulan di label
-        $barangMasukData = array_map(fn($month) => $barangMasuk[$month] ?? 0, range(1, 12));
-        $barangKeluarData = array_map(fn($month) => $barangKeluar[$month] ?? 0, range(1, 12));
+        $submissionData = array_map(fn($month) => $submission[$month] ?? 0, range(1, 12));
+        $request_itemData = array_map(fn($month) => $request_item[$month] ?? 0, range(1, 12));
 
         // Data untuk chart
         $chartData = [
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Barang Masuk',
-                    'data' => $barangMasukData,
+                    'label' => 'Pengadaan',
+                    'data' => $submissionData,
                     'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
                     'borderColor' => 'rgba(255, 99, 132, 1)',
                     'borderWidth' => 1
                 ],
                 [
-                    'label' => 'Barang Keluar',
-                    'data' => $barangKeluarData,
+                    'label' => 'Permintaan',
+                    'data' => $request_itemData,
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
                     'borderColor' => 'rgba(54, 162, 235, 1)',
                     'borderWidth' => 1

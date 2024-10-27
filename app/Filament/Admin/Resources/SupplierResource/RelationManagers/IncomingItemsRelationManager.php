@@ -44,7 +44,7 @@ class IncomingItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name')
+                Tables\Columns\TextColumn::make('division.name')
                     ->label('Petugas'),
                 Tables\Columns\TextColumn::make('supplier.name')
                     ->label('Supplier'),

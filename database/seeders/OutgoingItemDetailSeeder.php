@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Item;
 use App\Models\OutgoingItemDetail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,58 +14,13 @@ class OutgoingItemDetailSeeder extends Seeder
      */
     public function run(): void
     {
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '1',
-            'item_id' => '1',
-            'qty' => 12
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '1',
-            'item_id' => '2',
-            'qty' => 15
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '2',
-            'item_id' => '1',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '2',
-            'item_id' => '2',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '3',
-            'item_id' => '1',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '3',
-            'item_id' => '2',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '4',
-            'item_id' => '1',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '4',
-            'item_id' => '2',
-            'qty' => 10
-        ]);
-
-        OutgoingItemDetail::create([
-            'outgoing_item_id' => '5',
-            'item_id' => '1',
-            'qty' => 10
-        ]);
+        $item_ids = Item::all()->pluck('id')->toArray();
+        for ($i = 0; $i < 100; $i++) {
+            OutgoingItemDetail::create([
+                'outgoing_item_id' => fake()->numberBetween(1, 15),
+                'item_id' => fake()->randomElement($item_ids),
+                'qty' => fake()->numberBetween(5, 30),
+            ]);
+        }
     }
 }

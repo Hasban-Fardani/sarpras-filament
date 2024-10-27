@@ -141,7 +141,7 @@ class RequestItemResource extends Resource
         return $table
             ->query(RequestItem::where('status', '<>', 'draf'))
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name')
+                Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju')
                     ->searchable()
                     ->sortable(),

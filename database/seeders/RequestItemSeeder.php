@@ -13,29 +13,13 @@ class RequestItemSeeder extends Seeder
      */
     public function run(): void
     {
-        RequestItem::create([
-            'employee_id' => '3',
-            'status' => 'diajukan',
-        ]);
-
-        RequestItem::create([
-            'employee_id' => '4',
-            'status' => 'diajukan',
-        ]);
-
-        RequestItem::create([
-            'employee_id' => '4',
-            'status' => 'diajukan',
-        ]);
-
-        RequestItem::create([
-            'employee_id' => '3',
-            'status' => 'diajukan',
-        ]);
-
-        RequestItem::create([
-            'employee_id' => '4',
-            'status' => 'diajukan',
-        ]);
+        for ($i = 0; $i < 15; $i++) {
+            RequestItem::create([
+                'division_id' => fake()->numberBetween(3, 4),
+                'operator_id' => '1',
+                'status' => fake()->randomElement(['diajukan', 'draf', 'disetujui', 'ditolak']),
+                'created_at' => fake()->dateTimeBetween('-4 months', 'now'),
+            ]);
+        }
     }
 }

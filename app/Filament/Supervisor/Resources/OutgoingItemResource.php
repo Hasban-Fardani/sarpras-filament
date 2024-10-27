@@ -17,7 +17,7 @@ class OutgoingItemResource extends Resource
 {
     protected static ?string $model = OutgoingItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-right-on-rectangle';
 
     protected static ?string $navigationLabel = 'Barang Keluar';
 

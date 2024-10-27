@@ -18,7 +18,7 @@ class IncomingItemResource extends Resource
 {
     protected static ?string $model = IncomingItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-arrow-down-on-square-stack';
 
     protected static ?string $navigationLabel = 'Barang Masuk';
 

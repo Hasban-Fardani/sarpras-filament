@@ -19,11 +19,11 @@ class SubmissionItemDetailSeeder extends Seeder
         $faker = Faker::create();
 
         SubmissionItem::all()->each(function ($submissionItem) use ($faker) {
-            for ($i = 0; $i < 3; $i++) {
+            for ($i = 0; $i < 10; $i++) {
                 SubmissionItemDetail::create([
                     'submission_item_id' => $submissionItem->id,
                     'item_id' => $faker->randomElement(Item::all()->pluck('id')->toArray()),
-                    'qty' => $faker->numberBetween(1, 100),
+                    'qty' => $faker->numberBetween(20, 100),
                 ]);
             }
         });

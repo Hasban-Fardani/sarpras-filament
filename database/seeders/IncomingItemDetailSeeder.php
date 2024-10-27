@@ -16,14 +16,13 @@ class IncomingItemDetailSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
-        for ($j = 1; $j < 5; $j++) {
-
-            for ($i = 0; $i < 3; $i++) {
+        $item_ids = Item::all()->pluck('id')->toArray();
+        for ($j = 1; $j < 16; $j++) {
+            for ($i = 0; $i < 5; $i++) {
                 IncomingItemDetail::create([
                     'incoming_item_id' => $j,
-                    'item_id' => Item::inRandomOrder()->first()->id,
-                    'qty' => $faker->numberBetween(1, 10),
+                    'item_id' => $faker->randomElement($item_ids),
+                    'qty' => $faker->numberBetween(20, 100),
                 ]);
             }
         }

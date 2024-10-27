@@ -54,7 +54,7 @@ class RequestItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name')
+                Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju')
                     ->numeric()
                     ->sortable()
