@@ -44,6 +44,7 @@ class DivisionPanelProvider extends PanelProvider
             ->widgets([
                 DivisionWidgets\StatsOverview::class,
                 DivisionWidgets\SubmissionRequestItemChart::class,
+                DivisionWidgets\DivisionTutorSection::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -49,9 +49,19 @@ class ViewRequestItem extends ViewRecord
                         ->modalCancelActionLabel('Batal')
                         ->modalSubmitAction(fn(StaticAction $action) => $action->color(Color::Blue))
                         ->action(function (RequestItem $record) {
+                            if ($record->total_items_acc == 0) {
+                                Notification::make()
+                                    ->title('Permintaan Gagal')
+                                    ->warning()
+                                    ->body('Permintaan tidak dapat diterima, karena total item acc = 0')
+                                    ->send()
+                                    ->toDatabase();
+                                return;
+                            }
+
                             $record->update(['status' => 'disetujui']);
 
-                            $division_employee = $record->employee;
+                            $division_employee = $record->division;
 
                             $items = [];
                             
@@ -77,7 +87,7 @@ class ViewRequestItem extends ViewRecord
                                 ->send()
                                 ->toDatabase();
 
-                            $division_user = $record->employee->user;
+                            $division_user = $record->division->user;
                             $division_user->notify(
                                 Notification::make('Permintaan Diterima')
                                     ->title('Permintaan: ' . $record->id . ' Diterima')

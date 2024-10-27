@@ -31,6 +31,7 @@ class DetailsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('qty')
                     ->label('Jumlah')
                     ->numeric()
+                    ->rules(['required', 'integer'])
                     ->required(),
             ]);
     }
