@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Exports\ItemExporter;
 use App\Filament\Admin\Resources\ItemResource\Pages;
 use App\Filament\Admin\Resources\ItemResource\RelationManagers;
 use App\Filament\Imports\ItemImporter;
@@ -14,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
@@ -144,6 +146,9 @@ class ItemResource extends Resource
                     ->importer(ItemImporter::class)
                     ->label('Import Data')
                     ->icon('heroicon-o-folder-plus'),
+                ExportAction::make()
+                    ->exporter(ItemExporter::class)
+                    ->label('Export Data'),
             ])
             ->actions([
                 ActionGroup::make([

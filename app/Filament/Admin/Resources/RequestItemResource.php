@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Exports\RequestItemExporter;
 use App\Filament\Admin\Resources\RequestItemResource\Pages;
 use App\Filament\Admin\Resources\RequestItemResource\RelationManagers;
 use App\Models\Employee;
@@ -13,6 +14,7 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -87,6 +89,11 @@ class RequestItemResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(RequestItemExporter::class)
+                    ->label('Export Permintaan'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

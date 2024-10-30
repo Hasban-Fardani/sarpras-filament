@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Exports\IncomingItemExporter;
 use App\Filament\Admin\Resources\IncomingItemResource\Pages;
 use App\Filament\Admin\Resources\IncomingItemResource\RelationManagers;
 use App\Models\Employee;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -85,6 +87,10 @@ class IncomingItemResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(IncomingItemExporter::class),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

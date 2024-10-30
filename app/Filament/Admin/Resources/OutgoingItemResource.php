@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Exports\OutgoingItemExporter;
 use App\Filament\Admin\Resources\OutgoingItemResource\Pages;
 use App\Filament\Admin\Resources\OutgoingItemResource\RelationManagers;
 use App\Models\OutgoingItem;
@@ -12,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -77,6 +79,10 @@ class OutgoingItemResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(OutgoingItemExporter::class),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

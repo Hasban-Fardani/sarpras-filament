@@ -14,14 +14,18 @@ class ItemExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('id')
-                ->label('ID'),
-            ExportColumn::make('name'),
-            ExportColumn::make('unit'),
-            ExportColumn::make('price'),
-            ExportColumn::make('stock'),
-            ExportColumn::make('min_stock'),
-            ExportColumn::make('category.name')->label('Kategori'),
+            ExportColumn::make('name')
+                ->label('Nama'),
+            ExportColumn::make('unit')
+                ->label('Satuan'),
+            ExportColumn::make('price')
+                ->label('Harga'),
+            ExportColumn::make('stock')
+                ->label('Stok'),
+            ExportColumn::make('min_stock')
+                ->label('Min.Stok'),
+            ExportColumn::make('category.name')
+                ->label('Kategori'),
         ];
     }
 
