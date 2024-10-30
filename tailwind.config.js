@@ -9,6 +9,7 @@ export default {
         './resources/views/login.blade.php',
         './resources/views/reset-password.blade.php',
         './resources/views/filament/**/*.blade.php',
+        './resources/views/filament/**/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],
   theme: {

@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
+            ->default()
             ->passwordReset()
             ->colors([
                 'primary' => Color::Blue,
@@ -43,6 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 GlobalSearchModalPlugin::make()
             ])
+            ->profile(isSimple: false)
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -53,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AdminWidgets\StatsOverview::class,
                 AdminWidgets\InOutItemChart::class,
+                AdminWidgets\ItemMinimumStockTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,

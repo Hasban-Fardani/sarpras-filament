@@ -108,14 +108,11 @@ class ItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('merk')
-                    ->label('Merk')
-                    ->searchable(),
+                    ->label('Merk'),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('Tipe')
-                    ->searchable(),
+                    ->label('Tipe'),
                 Tables\Columns\TextColumn::make('size')
-                    ->label('Ukuran')
-                    ->searchable(),
+                    ->label('Ukuran'),
                 Tables\Columns\TextColumn::make('stock')
                     ->label('Stok')
                     ->numeric()
@@ -125,8 +122,7 @@ class ItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit')
-                    ->label('Satuan')
-                    ->searchable(),
+                    ->label('Satuan'),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Harga')
                     ->money('IDR', 0, 'id_ID')

@@ -33,7 +33,7 @@ class RequestItemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Informasi')->schema([
-                    Forms\Components\Select::make('employee_id')
+                    Forms\Components\Select::make('division_id')
                         ->label('Pengaju')
                         ->options(Employee::all()->pluck('name', 'id'))
                         ->default(Auth::user()->employee->id)
@@ -55,7 +55,7 @@ class RequestItemResource extends Resource
         $user = Auth::user();
         $user->load('employee');
         return $table
-            ->query(RequestItem::where('division_id', $user->employee->id))
+            ->query(RequestItem::where('division_id', $user->employee->id)->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('division.name')
                     ->label('Pengaju'),

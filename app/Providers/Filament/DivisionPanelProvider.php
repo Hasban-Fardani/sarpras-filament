@@ -32,6 +32,7 @@ class DivisionPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->profile(isSimple: false)
             ->topNavigation()
             ->plugins([])
             ->brandName('Panel Divisi')

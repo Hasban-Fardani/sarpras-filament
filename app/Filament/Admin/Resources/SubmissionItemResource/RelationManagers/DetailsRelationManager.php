@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 
 class DetailsRelationManager extends RelationManager
 {
@@ -23,7 +24,10 @@ class DetailsRelationManager extends RelationManager
                     ->label('Barang')
                     ->options(function (callable $get) {
                         $exists_items_id = $this->ownerRecord->load('details')->details->pluck('item_id'); 
-                        return Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                        $items = Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                        $current_item = Item::where('id', $get('item_id'))->first()->pluck('name', 'id');
+                        $items->push($current_item);
+                        return $items;
                     })
                     ->reactive()
                     ->searchable()
