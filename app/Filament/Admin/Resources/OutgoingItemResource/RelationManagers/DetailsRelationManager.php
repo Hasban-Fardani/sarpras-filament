@@ -25,8 +25,11 @@ class DetailsRelationManager extends RelationManager
                     ->maxLength(255),
                 Forms\Components\Select::make('item_id')
                     ->options(function (callable $get) {
-                        $exists_items_id = $this->ownerRecord->load('details')->details->pluck('item_id');
-                        return Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                        $exists_items_id = $this->ownerRecord->load('details')->details->pluck('item_id'); 
+                        $items = Item::whereNotIn('id', $exists_items_id)->get()->pluck('name', 'id');
+                        $current_item = Item::where('id', $get('item_id'))->first()->pluck('name', 'id');
+                        $items->push($current_item);
+                        return $items;
                     })
                     ->reactive()
                     ->searchable()
