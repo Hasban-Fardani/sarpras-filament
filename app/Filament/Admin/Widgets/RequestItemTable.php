@@ -15,7 +15,7 @@ class RequestItemTable extends BaseWidget
     {
         return $table
             ->query(
-                RequestItem::with(['division'])->where('status')
+                RequestItem::with(['division'])->where('status', 'diajukan')
             )
             ->columns([
                 Tables\Columns\TextColumn::make('division.name')
