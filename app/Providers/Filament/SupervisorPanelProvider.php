@@ -49,6 +49,9 @@ class SupervisorPanelProvider extends PanelProvider
                 SupervisorWidgets\StatsOverview::class,
                 SupervisorWidgets\InOutItemChart::class,
                 SupervisorWidgets\SubmissionRequestItemChart::class,
+                SupervisorWidgets\SubmissionItemTable::class,
+                SupervisorWidgets\RequestItemTable::class,
+                SupervisorWidgets\ItemMinimumStockTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,
