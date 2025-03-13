@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -88,12 +90,45 @@ class EmployeeResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make('Informasi Pegawai')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('name')
+                            ->label('Nama'),
+                        Infolists\Components\TextEntry::make('nip')
+                            ->label('NIP'),
+                        Infolists\Components\TextEntry::make('position')
+                            ->label('Jabatan'),
+                        Infolists\Components\TextEntry::make('phone')
+                            ->label('Telepon'),
+                        Infolists\Components\TextEntry::make('email')
+                            ->label('Email'),
+                        Infolists\Components\TextEntry::make('user.id')
+                            ->label('Punya Akun')
+                            ->formatStateUsing(function ($state) {
+                                return $state ? 'Ya' : 'Tidak';
+                            }),
+                        Infolists\Components\TextEntry::make('created_at')
+                            ->label('Dibuat Pada')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('updated_at')
+                            ->label('Diubah Pada')
+                            ->dateTime(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -109,6 +144,7 @@ class EmployeeResource extends Resource
         return [
             'index' => Pages\ListEmployees::route('/'),
             'create' => Pages\CreateEmployee::route('/create'),
+            'view' => Pages\ViewEmployee::route('/{record}'),
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
