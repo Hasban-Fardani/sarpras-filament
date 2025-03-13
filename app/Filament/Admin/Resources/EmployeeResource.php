@@ -112,4 +112,11 @@ class EmployeeResource extends Resource
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
+
+    public static function getImporters(): array
+    {
+        return [
+            EmployeeImporter::class,
+        ];
+    }
 }
